@@ -1,0 +1,19 @@
+# Servidor
+fastapi>=0.141
+uvicorn>=0.53
+python-multipart>=0.0.32
+python-dotenv>=1.2
+pydantic>=2.13
+httpx>=0.28
+
+# Ingesta y RAG
+PyYAML>=6.0
+numpy>=2.5
+rank-bm25>=0.2.2
+voyageai>=0.5
+
+# LLM
+anthropic>=1.8
+
+# Pruebas
+pytest>=9.1

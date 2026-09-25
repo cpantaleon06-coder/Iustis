@@ -1,0 +1,27 @@
+# Banco de pruebas (lo redactan los autores del proyecto).
+# Lo usan: python -m rag.calibrar (umbral) y el reporte del banco (paso 7).
+#
+# Campos:
+#   id               identificador corto único (T01, L01, X01...)
+#   modulo           id del módulo en data/modules.yaml, o null si la pregunta no pertenece a ningún módulo
+#   pregunta         tal como la escribiría una persona por WhatsApp
+#   esperado         responder | abstenerse
+#   citas_esperadas  ids de artículo (por ejemplo LFT-48); cuenta como correcta si cita AL MENOS UNO.
+#                    Vacío si debe abstenerse. Los ids exactos están en data/processed/<fuente>.jsonl
+#   seguimiento      opcional: lo que contestaría la persona si el asistente le pide un dato
+#   notas            opcional
+#
+# Antes de correr el banco (cuesta llamadas a Claude), revísalo gratis con:
+#   python -m tests.bench.run_bench --validar
+#
+# Incluyan también preguntas del área correcta que el corpus NO cubre: son las que
+# mejor calibran el umbral de abstención.
+#
+# Ejemplo de forma (no es contenido real):
+#   - id: L01
+#     modulo: laboral_despido
+#     pregunta: "..."
+#     esperado: responder
+#     citas_esperadas: [LFT-000]
+
+preguntas: []

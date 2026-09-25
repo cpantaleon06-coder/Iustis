@@ -1,0 +1,26 @@
+# Registro de módulos (un módulo = un área del derecho con su propio corpus).
+#
+# Para agregar un módulo nuevo:
+#   1. Coloca el texto oficial en data/raw/<fuente>.txt
+#   2. Copia data/raw/_plantilla.meta.yaml como data/raw/<fuente>.meta.yaml y llénalo
+#   3. Da de alta el módulo aquí abajo
+#   4. Corre: python -m ingestion.ingest --modulo <id_modulo>
+#
+# "area" debe ser una de las áreas que reconoce el triaje:
+#   transito, laboral, constitucional, civil, penal
+
+modulos:
+  transito_cdmx:
+    nombre: "Tránsito en la Ciudad de México"
+    area: transito
+    activo: true
+    fuentes:
+      - reglamento_transito_cdmx
+
+  laboral_despido:
+    nombre: "Despido laboral"
+    area: laboral
+    activo: true
+    calculadora: laboral   # usa backend/calculadora/parametros_laborales.yaml
+    fuentes:
+      - ley_federal_trabajo

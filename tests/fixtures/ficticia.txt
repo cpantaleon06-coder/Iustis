@@ -1,0 +1,35 @@
+LEY FICTICIA DE PRUEBAS DEL PARSER
+TEXTO INVENTADO PARA PRUEBAS AUTOMATIZADAS. NO ES DERECHO VIGENTE.
+
+TÍTULO PRIMERO
+Disposiciones ficticias
+
+CAPÍTULO I
+De los objetos de prueba
+
+Artículo 1o.- Este texto ficticio sirve únicamente para probar el parser.
+Tiene una segunda línea que forma parte del mismo artículo.
+Artículo reformado DOF 01-01-2000
+
+Artículo 2.- El artículo 1 de esta ley ficticia no existe en la realidad.
+Artículo 1. Esta línea es una remisión que cayó al inicio de línea.
+
+Página 3 de 10
+
+Artículo 2 Bis.- Texto ficticio adicionado.
+
+Artículo 3.- Se deroga.
+
+CAPÍTULO II
+De los casos problemáticos
+
+Artículo 4.- Este artículo ficticio tiene una omisión [...] en medio del texto.
+
+Artículo 5.- Este artículo ficticio termina de forma abrupta y no tiene
+
+Artículo 8.- Después de un salto de numeración. [INCOMPLETO: falta la fracción II]
+
+Artículo 9.-
+
+TRANSITORIOS
+PRIMERO.- Este transitorio ficticio no debe aparecer en el corpus.

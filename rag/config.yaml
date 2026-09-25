@@ -1,0 +1,16 @@
+embeddings:
+  proveedor: voyage
+  # Confirmar con una llamada real en cuanto haya VOYAGE_API_KEY (python -m rag.index --probar-embeddings)
+  modelo: voyage-4
+
+recuperacion:
+  k: 5          # artículos que pasan como contexto a la generación
+  rrf_k: 60     # constante estándar de Reciprocal Rank Fusion
+
+verificacion:
+  # PROVISIONAL, SIN CALIBRAR. Similitud coseno mínima del mejor artículo para contestar.
+  # Se fija con: python -m rag.calibrar (usa el banco de pruebas).
+  umbral_similitud: 0.5
+  umbral_calibrado: false
+  # Una cita textual debe tener al menos estos caracteres (evita "citas" triviales)
+  cita_min_caracteres: 20

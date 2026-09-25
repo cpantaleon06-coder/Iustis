@@ -1,0 +1,17 @@
+# Instituciones del módulo transito_cdmx. Mismo formato que general.yaml.
+# TODO lo que dice PLACEHOLDER debe llenarlo y verificarlo el equipo.
+
+instituciones:
+  - id: transito_queja
+    nombre: "PLACEHOLDER (instancia para quejas contra agentes de tránsito)"
+    cuando: "PLACEHOLDER"
+    contacto: "PLACEHOLDER"
+    tipo: canalizacion
+    verificado: false
+
+  - id: transito_impugnacion
+    nombre: "PLACEHOLDER (instancia para impugnar una infracción)"
+    cuando: "PLACEHOLDER"
+    contacto: "PLACEHOLDER"
+    tipo: canalizacion
+    verificado: false

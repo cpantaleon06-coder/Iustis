@@ -1,0 +1,106 @@
+# Parámetros de la calculadora de despido.
+#
+# NINGÚN VALOR DE ESTE ARCHIVO ESTÁ VERIFICADO. Todos los números legales (días,
+# porcentajes, topes, divisores, salario mínimo) están en null a propósito: el equipo
+# debe llenarlos desde la ley vigente. Un concepto con algún parámetro en null no se
+# calcula y la respuesta explica qué falta.
+#
+# Cada concepto requiere un fundamento:
+#   articulo_id  id del artículo en el corpus (por ejemplo LFT-000, ver data/processed/)
+#   cita         fragmento copiado literalmente del artículo. El código lo coteja contra
+#                el corpus indexado con el mismo verificador que las respuestas; si no
+#                coincide, el concepto no se calcula.
+#
+# "verificado: true" solo cuando alguien del equipo revisó parámetros, fórmula y cita.
+# Mientras sea false, la cifra se muestra marcada como PENDIENTE DE VERIFICACIÓN.
+#
+# Tipos de fórmula disponibles (el código solo hace la aritmética):
+#   dias_fijos             parametros.dias × salario diario
+#   dias_por_anio          parametros.dias_por_anio × años de servicio × salario diario
+#                          (años con fracción si parametros.proporcional es true)
+#   proporcional_anual     parametros.dias_anuales × (días trabajados en el año calendario del despido / días del año) × salario diario
+#   tabla_por_antiguedad   días según la fila de parametros.tabla que corresponde a los años cumplidos,
+#                          proporcional al tiempo desde el último aniversario, × salario diario
+#   porcentaje_de_concepto parametros.porcentaje (%) × monto de parametros.concepto_base
+#
+# Tope opcional del salario base: tope_salario.multiplo_salario_minimo
+#   (el salario diario usado se limita a ese múltiplo del salario mínimo)
+#
+# supuestos: en qué escenario aplica el concepto. Valores reconocidos:
+#   siempre                 aplica en cualquier terminación de la relación
+#   despido_injustificado   solo si el despido resulta injustificado
+
+modulo: laboral_despido
+
+salario_minimo_diario:
+  valor: null            # PLACEHOLDER
+  vigencia: "PLACEHOLDER"
+  fuente: "PLACEHOLDER"
+  verificado: false
+
+# Para convertir el salario que reporta la persona a salario diario
+divisores_periodo:
+  semanal: null          # PLACEHOLDER
+  quincenal: null        # PLACEHOLDER
+  mensual: null          # PLACEHOLDER
+
+advertencias:
+  - "PLACEHOLDER: advertencias que deben acompañar toda estimación (por ejemplo, sobre la base salarial usada)"
+
+conceptos:
+  - id: indemnizacion_despido
+    nombre: "PLACEHOLDER (sugerencia a verificar: indemnización por despido injustificado)"
+    activo: true
+    supuestos: [despido_injustificado]
+    tipo: dias_fijos
+    parametros: {dias: null}
+    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    verificado: false
+
+  - id: indemnizacion_por_anio
+    nombre: "PLACEHOLDER (sugerencia a verificar: indemnización por año de servicio en los supuestos que la ley señale)"
+    activo: false        # definan en qué supuesto aplica antes de activarlo
+    supuestos: [despido_injustificado]
+    tipo: dias_por_anio
+    parametros: {dias_por_anio: null, proporcional: true}
+    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    verificado: false
+
+  - id: prima_antiguedad
+    nombre: "PLACEHOLDER (sugerencia a verificar: prima de antigüedad)"
+    activo: true
+    supuestos: [siempre]
+    tipo: dias_por_anio
+    parametros: {dias_por_anio: null, proporcional: true}
+    tope_salario: {multiplo_salario_minimo: null}
+    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    verificado: false
+
+  - id: aguinaldo_proporcional
+    nombre: "PLACEHOLDER (sugerencia a verificar: parte proporcional de aguinaldo)"
+    activo: true
+    supuestos: [siempre]
+    tipo: proporcional_anual
+    parametros: {dias_anuales: null}
+    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    verificado: false
+
+  - id: vacaciones_proporcionales
+    nombre: "PLACEHOLDER (sugerencia a verificar: parte proporcional de vacaciones)"
+    activo: true
+    supuestos: [siempre]
+    tipo: tabla_por_antiguedad
+    parametros:
+      # filas {desde_anio, hasta_anio, dias}; hasta_anio null = sin límite superior
+      tabla: []
+    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    verificado: false
+
+  - id: prima_vacacional
+    nombre: "PLACEHOLDER (sugerencia a verificar: prima vacacional)"
+    activo: true
+    supuestos: [siempre]
+    tipo: porcentaje_de_concepto
+    parametros: {porcentaje: null, concepto_base: vacaciones_proporcionales}
+    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    verificado: false

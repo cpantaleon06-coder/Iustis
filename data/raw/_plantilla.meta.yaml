@@ -1,0 +1,16 @@
+# Plantilla de metadata para una fuente legal.
+# Copia este archivo como <fuente>.meta.yaml junto a <fuente>.txt
+# Los campos con "PLACEHOLDER" se aceptan, pero la ingesta los reporta como pendientes.
+
+ley: "PLACEHOLDER: nombre oficial completo de la ley o reglamento"
+abreviatura: "PLACEHOLDER"          # se usa en los ids, por ejemplo LFT produce LFT-48
+jurisdiccion: "PLACEHOLDER"         # por ejemplo: Federal, Ciudad de México
+fuente_url: "PLACEHOLDER"           # de dónde se copió el texto oficial
+fecha_version: "PLACEHOLDER"        # fecha de la última reforma según el propio documento (AAAA-MM-DD)
+fecha_consulta: "PLACEHOLDER"       # fecha en que se descargó o copió (AAAA-MM-DD)
+
+# Opcionales
+excluir_transitorios: true
+# Expresiones regulares de líneas de ruido a eliminar (encabezados o pies de página del PDF).
+# Cada línea eliminada se cuenta en el reporte de ingesta.
+ruido_regex: []

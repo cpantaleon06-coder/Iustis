@@ -1,0 +1,16 @@
+# Entorno
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Secretos
+.env
+
+# Artefactos generados (se reconstruyen con la ingesta y el indexado)
+data/index/
+tests/bench/resultados/
+
+# Sistema
+.DS_Store
+Thumbs.db

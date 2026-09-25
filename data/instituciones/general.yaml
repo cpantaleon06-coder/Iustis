@@ -1,0 +1,29 @@
+# Instituciones generales (aplican a cualquier módulo).
+# TODO lo que dice PLACEHOLDER debe llenarlo y verificarlo el equipo antes del demo.
+# Mientras "verificado" sea false, la respuesta muestra la institución con la marca
+# [PENDIENTE DE VERIFICACIÓN].
+#
+# El modelo NUNCA redacta estos datos: solo elige ids de este catálogo.
+#
+# Campos:
+#   id          identificador interno
+#   nombre      nombre oficial
+#   cuando      en qué casos se recomienda (el modelo lo lee para elegir)
+#   contacto    teléfono, dirección o sitio web oficial
+#   tipo        emergencia | canalizacion (canalizacion = a dónde mandar cuando el asistente se abstiene)
+#   verificado  true solo cuando alguien del equipo confirmó los datos en fuente oficial
+
+instituciones:
+  - id: emergencias
+    nombre: "PLACEHOLDER (sugerencia a verificar: número nacional de emergencias)"
+    cuando: "Peligro inmediato para la vida o la integridad, violencia en curso, detención con uso de fuerza"
+    contacto: "PLACEHOLDER"
+    tipo: emergencia
+    verificado: false
+
+  - id: defensoria_publica
+    nombre: "PLACEHOLDER (sugerencia a verificar: defensoría pública que corresponda)"
+    cuando: "Orientación y representación legal gratuita cuando el asistente no puede confirmar la respuesta"
+    contacto: "PLACEHOLDER"
+    tipo: canalizacion
+    verificado: false

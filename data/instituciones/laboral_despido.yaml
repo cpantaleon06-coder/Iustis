@@ -1,0 +1,17 @@
+# Instituciones del módulo laboral_despido. Mismo formato que general.yaml.
+# TODO lo que dice PLACEHOLDER debe llenarlo y verificarlo el equipo.
+
+instituciones:
+  - id: laboral_asesoria_gratuita
+    nombre: "PLACEHOLDER (sugerencia a verificar: procuraduría de la defensa del trabajo que corresponda)"
+    cuando: "PLACEHOLDER"
+    contacto: "PLACEHOLDER"
+    tipo: canalizacion
+    verificado: false
+
+  - id: laboral_conciliacion
+    nombre: "PLACEHOLDER (sugerencia a verificar: centro de conciliación laboral que corresponda)"
+    cuando: "PLACEHOLDER"
+    contacto: "PLACEHOLDER"
+    tipo: canalizacion
+    verificado: false
