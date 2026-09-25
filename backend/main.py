@@ -25,6 +25,7 @@ from pydantic import BaseModel, Field
 
 from backend.canales.openwa import ClienteOpenWA, Deduplicador, MensajeEntrante, firma_valida, interpretar
 from backend.canales.voz import ErrorVoz, transcribir
+from backend.limites import desde_entorno
 from backend.pipeline import Pipeline
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
@@ -36,10 +37,28 @@ MAX_CARACTERES = 2000
 AVISO_TIPO_NO_SOPORTADO = "Por ahora solo puedo leer mensajes de texto y notas de voz. Cuéntame tu caso con palabras."
 AVISO_VOZ_FALLIDA = "No pude entender tu nota de voz. ¿Me lo puedes escribir?"
 AVISO_ERROR = "Tuve un problema técnico. Intenta de nuevo en unos minutos."
+AVISO_LIMITE = (
+    "Recibí muchos mensajes seguidos. Para cuidar el servicio, espera un rato antes de escribir de nuevo. "
+    "Si tu caso es urgente, acude directamente a las instituciones que te indiqué."
+)
 
 app = FastAPI(title="Primeros Auxilios Legales")
 _estado: dict = {"pipeline": None, "openwa": None}
 deduplicador = Deduplicador()
+# Cada mensaje cuesta llamadas a Claude: límites por usuario y por IP (ventana de una hora)
+limite_usuario = desde_entorno("LIMITE_MENSAJES_USUARIO_HORA", 20)
+limite_ip = desde_entorno("LIMITE_MENSAJES_IP_HORA", 60)
+
+
+def ip_cliente(request: Request) -> str:
+    # Detrás de ngrok todas las peticiones llegan desde 127.0.0.1; la IP real viene en X-Forwarded-For
+    reenviada = request.headers.get("X-Forwarded-For", "")
+    return reenviada.split(",")[0].strip() or (request.client.host if request.client else "desconocida")
+
+
+def verificar_limite_web(usuario: str, request: Request) -> None:
+    if not limite_ip.permitir(ip_cliente(request)) or not limite_usuario.permitir(usuario):
+        raise HTTPException(429, AVISO_LIMITE)
 
 
 def pipeline() -> Pipeline:
@@ -90,15 +109,17 @@ def chat_web():
 
 
 @app.post("/api/chat")
-def api_chat(m: MensajeWeb):
+def api_chat(m: MensajeWeb, request: Request):
     usuario = f"web:{m.sesion}"
+    verificar_limite_web(usuario, request)
     r = pipeline().procesar(usuario, m.mensaje)
     registrar(usuario, r)
     return {"tipo": r.tipo, "texto": r.texto}
 
 
 @app.post("/api/chat/voz")
-def api_chat_voz(sesion: str = Form(min_length=8, max_length=64), audio: UploadFile = File(...)):
+def api_chat_voz(request: Request, sesion: str = Form(min_length=8, max_length=64), audio: UploadFile = File(...)):
+    verificar_limite_web(f"web:{sesion}", request)
     try:
         texto = transcribir(audio.file.read(), audio.content_type or "")
     except ErrorVoz as e:
@@ -143,6 +164,9 @@ def texto_de_voz(m: MensajeEntrante) -> str:
 def atender_whatsapp(m: MensajeEntrante) -> None:
     cliente = openwa()
     try:
+        if not limite_usuario.permitir(m.chat_id):
+            cliente.enviar_texto(m.chat_id, AVISO_LIMITE)
+            return
         if m.tipo == "otro":
             cliente.enviar_texto(m.chat_id, AVISO_TIPO_NO_SOPORTADO)
             return

@@ -1,0 +1,13 @@
+ley: "Ley Federal del Trabajo"
+abreviatura: "LFT"
+jurisdiccion: "Federal"
+fuente_url: "https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf"
+# Según el encabezado del propio documento: "Última Reforma DOF 14-05-2026"
+fecha_version: "2026-05-14"
+fecha_consulta: "2026-09-25"
+
+excluir_transitorios: true
+ruido_regex: []
+
+# Texto extraído del PDF oficial con: python -m ingestion.extraer --tablas
+# Los originales descargados están en data/raw/fuentes_oficiales.zip

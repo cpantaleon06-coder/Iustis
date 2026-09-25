@@ -68,7 +68,8 @@ def test_derogado_no_se_marca_incompleto(por_id):
 
 def test_marcas_de_incompletitud(por_id):
     assert any("puntos suspensivos" in m for m in por_id["LFP-4"].motivos_incompleto)
-    assert any("truncamiento" in m for m in por_id["LFP-5"].motivos_incompleto)
+    assert not por_id["LFP-5"].incompleto  # sin punto final es advertencia, no exclusión
+    assert any("sin puntuación final" in m for m in por_id["LFP-5"].advertencias)
     assert any("manualmente" in m for m in por_id["LFP-8"].motivos_incompleto)
     assert por_id["LFP-9"].motivos_incompleto == ["sin texto en la fuente"]
 
@@ -99,7 +100,8 @@ def test_ingesta_completa_con_metadata(tmp_path):
     reporte = ingestar_fuente("ficticia", "modulo_prueba", raw, tmp_path / "out")
     assert reporte["total_articulos"] == 8
     assert reporte["metadata_pendiente"] == ["fuente_url"]
-    assert len(reporte["incompletos"]) == 4
+    assert len(reporte["incompletos"]) == 3
+    assert [a["id"] for a in reporte["advertencias"]] == ["LFP-5"]
 
     lineas = (tmp_path / "out" / "ficticia.jsonl").read_text(encoding="utf-8").splitlines()
     primero = json.loads(lineas[0])
@@ -125,3 +127,82 @@ def test_texto_en_cp1252(tmp_path):
     assert reporte["codificacion"] == "cp1252"
     art = json.loads((tmp_path / "out" / "f.jsonl").read_text(encoding="utf-8"))
     assert art["texto"] == "Texto con acentos: órgano."
+
+
+def test_articulos_con_letra_y_notas_de_la_gaceta_cdmx():
+    crudo = (
+        "Artículo 39.- Texto ficticio del artículo base.\n"
+        "Artículo 39-A. Texto ficticio adicionado con letra.\n"
+        "Párrafo reformado G.O. CDMX 10/08/23\n"
+        "Artículo 39-B. Otro texto ficticio.\n"
+        "Tabla reformada G.O. CDMX 10/08/23\n"
+        "Fracciones reformadas DOF 01-05-2019\n"
+    )
+    arts = {a.id: a for a in parsear(crudo, abreviatura="LFP").articulos}
+    assert list(arts) == ["LFP-39", "LFP-39-A", "LFP-39-B"]
+    assert arts["LFP-39-A"].articulo == "39-A" and arts["LFP-39-A"].sufijo == "a"
+    assert arts["LFP-39-A"].notas_reforma == ["Párrafo reformado G.O. CDMX 10/08/23"]
+    assert arts["LFP-39-B"].texto == "Otro texto ficticio."
+    assert len(arts["LFP-39-B"].notas_reforma) == 2
+
+
+def test_encabezados_en_minusculas_y_titulos_de_varias_lineas():
+    crudo = (
+        "Artículo 45.- Texto ficticio que en la fuente no trae punto final\n"
+        "\n"
+        "CAPITULO IV\n"
+        "Nombre ficticio del capítulo que ocupa\n"
+        "dos líneas\n"
+        "Denominación del Capítulo reformada DOF 01-01-2000\n"
+        "\n"
+        "Artículo 46.- Texto ficticio.\n"
+        "Capítulo III BIS\n"
+        "Otro capítulo ficticio\n"
+        "\n"
+        "Sección Primera\n"
+        "Reglas ficticias\n"
+        "Artículo 47.- Otro texto ficticio.\n"
+        "Artículo reformado DOF 01-01-2000. Reformado con “Tabla ficticia” y “Otra\n"
+        "\n"
+        "tabla ficticia” DOF 02-02-2000\n"
+        "Fe de erratas al artículo DOF 03-03-2000\n"
+        "Reforma DOF 04-04-2000: Derogó del artículo el entonces párrafo segundo\n"
+        "Artículo 353-Ñ.- Texto ficticio con eñe.\n"
+    )
+    res = parsear(crudo, abreviatura="LFP")
+    arts = {a.id: a for a in res.articulos}
+    assert list(arts) == ["LFP-45", "LFP-46", "LFP-47", "LFP-353-Ñ"]
+    assert arts["LFP-45"].texto == "Texto ficticio que en la fuente no trae punto final"
+    assert arts["LFP-45"].advertencias and not arts["LFP-45"].incompleto
+    assert arts["LFP-46"].ubicacion == "CAPITULO IV (Nombre ficticio del capítulo que ocupa dos líneas)"
+    assert arts["LFP-46"].texto == "Texto ficticio."
+    assert arts["LFP-47"].ubicacion == "Capítulo III BIS (Otro capítulo ficticio) > Sección Primera (Reglas ficticias)"
+    assert arts["LFP-47"].texto == "Otro texto ficticio."
+    assert len(arts["LFP-47"].notas_reforma) == 3
+    assert arts["LFP-353-Ñ"].articulo == "353-Ñ"
+    assert res.notas_de_encabezados == 1
+
+
+def test_linea_del_cuerpo_que_empieza_con_capitulo_no_es_encabezado():
+    crudo = "Artículo 1.- Se aplicará lo dispuesto en el\nCapítulo XI de esta Ley.\nArtículo 2.- Otro."
+    arts = parsear(crudo, abreviatura="LFP").articulos
+    assert arts[0].texto == "Se aplicará lo dispuesto en el\nCapítulo XI de esta Ley."
+
+
+def test_titulo_tras_linea_en_blanco_ene_y_derogado_dof():
+    crudo = (
+        "Artículo 353-N.- Texto ficticio ene.\n"
+        "Artículo 353-Ñ.- Texto ficticio eñe.\n"
+        "CAPITULO III\n"
+        "\n"
+        "Contrato ficticio\n"
+        "\n"
+        "Artículo 386.- Se deroga.\n"
+        "Derogado DOF 01-05-2019\n"
+    )
+    res = parsear(crudo, abreviatura="LFP")
+    arts = {a.id: a for a in res.articulos}
+    assert list(arts) == ["LFP-353-N", "LFP-353-Ñ", "LFP-386"] and not res.duplicados
+    assert arts["LFP-353-Ñ"].texto == "Texto ficticio eñe."
+    assert arts["LFP-386"].ubicacion == "CAPITULO III (Contrato ficticio)"
+    assert arts["LFP-386"].derogado and arts["LFP-386"].notas_reforma == ["Derogado DOF 01-05-2019"]

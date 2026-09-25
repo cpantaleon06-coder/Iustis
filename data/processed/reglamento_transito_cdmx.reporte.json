@@ -1,0 +1,35 @@
+{
+  "fuente": "reglamento_transito_cdmx",
+  "modulo": "transito_cdmx",
+  "sha256_fuente": "bcbdb3222d805177095eedb5fc94697d467741f89b382370838c8842d853ae44",
+  "codificacion": "utf-8",
+  "metadata_pendiente": [],
+  "total_articulos": 70,
+  "derogados": [
+    "RTCDMX-61"
+  ],
+  "advertencias": [
+    {
+      "id": "RTCDMX-6",
+      "linea": 512,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "RTCDMX-56",
+      "linea": 3428,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    }
+  ],
+  "incompletos": [],
+  "saltos_numeracion": [],
+  "duplicados": [],
+  "encabezados_descartados": [],
+  "lineas_ruido_eliminadas": 0,
+  "notas_de_encabezados": 1,
+  "lineas_transitorios_omitidas": 2430,
+  "lineas_previas_al_primer_articulo": 13
+}

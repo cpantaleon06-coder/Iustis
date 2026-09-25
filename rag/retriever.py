@@ -27,6 +27,7 @@ from rag.texto import sin_acentos, tokenizar
 
 REFERENCIA_ARTICULO = re.compile(
     r"\bart(?:iculo|\.)?s?\s*(\d+)(?:\s*(?:o|º|°)\.?)?"
+    r"(?:\s*-\s*([a-z])\b)?"
     r"(?:\s*(bis|ter|quater|quinquies|sexies|septies|octies|nonies|decies)\b)?"
 )
 
@@ -89,7 +90,8 @@ class Recuperador:
         """Índices de artículos que la consulta menciona por número ("artículo 48", "art. 3o")."""
         encontrados = []
         for m in REFERENCIA_ARTICULO.finditer(sin_acentos(consulta.lower())):
-            i = self._por_clave.get(self._clave(int(m.group(1)), m.group(2)))
+            suf = "-".join(x for x in (m.group(2), m.group(3)) if x) or None
+            i = self._por_clave.get(self._clave(int(m.group(1)), suf))
             if i is not None and i not in encontrados:
                 encontrados.append(i)
         return encontrados

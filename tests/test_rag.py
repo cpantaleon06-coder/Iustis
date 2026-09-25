@@ -128,3 +128,11 @@ def test_proponer_umbral_separa_grupos():
     puntos = [(0.82, True), (0.75, True), (0.70, True), (0.41, False), (0.35, False), (0.30, False)]
     umbral, aciertos = proponer_umbral(puntos)
     assert aciertos == 6 and 0.41 < umbral < 0.70
+
+
+def test_referencia_explicita_con_letra():
+    from rag.retriever import REFERENCIA_ARTICULO
+    from rag.texto import sin_acentos
+
+    m = REFERENCIA_ARTICULO.search(sin_acentos("¿qué dice el artículo 153-A?".lower()))
+    assert m.group(1) == "153" and m.group(2) == "a"

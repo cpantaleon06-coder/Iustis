@@ -1,0 +1,14 @@
+ley: "Reglamento de Tránsito de la Ciudad de México"
+abreviatura: "RTCDMX"
+jurisdiccion: "Ciudad de México"
+fuente_url: "https://data.consejeria.cdmx.gob.mx/images/leyes/2025/181225/REGLAMENTO_DE_TRNSITO_DE_LA_CIUDAD_DE_MXICO_6.4.pdf"
+# Según el encabezado del propio documento: "Última reforma publicada en la G.O. CDMX el 30 de junio de 2026"
+fecha_version: "2026-06-30"
+fecha_consulta: "2026-09-25"
+
+excluir_transitorios: true
+ruido_regex: []
+
+# Texto extraído del PDF oficial con: python -m ingestion.extraer --tablas --docx
+# (verificado párrafo por párrafo contra el DOCX oficial de la misma página).
+# Los originales descargados están en data/raw/fuentes_oficiales.zip

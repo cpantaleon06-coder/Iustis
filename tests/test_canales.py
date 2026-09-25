@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 import backend.main as servidor
 from backend.canales import openwa, voz
 from backend.canales.openwa import ClienteOpenWA, Deduplicador, firma_valida, interpretar, partir
+from backend.limites import Limitador
 from backend.pipeline import Resultado
 
 SECRETO = "secreto-de-prueba"
@@ -182,6 +183,8 @@ def cliente(monkeypatch):
     monkeypatch.setitem(servidor._estado, "pipeline", p)
     monkeypatch.setitem(servidor._estado, "openwa", wa)
     monkeypatch.setattr(servidor, "deduplicador", Deduplicador())
+    monkeypatch.setattr(servidor, "limite_usuario", Limitador(20))
+    monkeypatch.setattr(servidor, "limite_ip", Limitador(60))
     return TestClient(servidor.app), p, wa
 
 
@@ -275,3 +278,42 @@ def test_pagina_de_chat(cliente):
     tc, _, _ = cliente
     r = tc.get("/")
     assert r.status_code == 200 and "Primeros Auxilios Legales" in r.text
+
+
+# Límites de uso
+
+def test_limitador_ventana_deslizante():
+    lim = Limitador(2, ventana_segundos=10)
+    assert lim.permitir("a", 0) and lim.permitir("a", 1)
+    assert not lim.permitir("a", 2)
+    assert lim.permitir("b", 2)  # cada clave tiene su propio límite
+    assert lim.permitir("a", 10.5)  # el primer evento ya salió de la ventana
+
+
+def test_chat_web_limite_por_sesion(cliente, monkeypatch):
+    tc, p, _ = cliente
+    monkeypatch.setattr(servidor, "limite_usuario", Limitador(2))
+    cuerpo = {"sesion": "abcdefgh1234", "mensaje": "hola"}
+    assert tc.post("/api/chat", json=cuerpo).status_code == 200
+    assert tc.post("/api/chat", json=cuerpo).status_code == 200
+    r = tc.post("/api/chat", json=cuerpo)
+    assert r.status_code == 429 and "muchos mensajes" in r.json()["detail"]
+    assert len(p.llamadas) == 2  # el tercero no llegó al pipeline (no gastó créditos)
+
+
+def test_chat_web_limite_por_ip_detras_de_ngrok(cliente, monkeypatch):
+    tc, p, _ = cliente
+    monkeypatch.setattr(servidor, "limite_ip", Limitador(1))
+    h1, h2 = {"X-Forwarded-For": "1.1.1.1"}, {"X-Forwarded-For": "2.2.2.2"}
+    assert tc.post("/api/chat", json={"sesion": "sesion-uno-123", "mensaje": "a"}, headers=h1).status_code == 200
+    assert tc.post("/api/chat", json={"sesion": "sesion-dos-123", "mensaje": "b"}, headers=h1).status_code == 429
+    assert tc.post("/api/chat", json={"sesion": "sesion-tres-12", "mensaje": "c"}, headers=h2).status_code == 200
+
+
+def test_whatsapp_limite_avisa_sin_llamar_al_pipeline(cliente, monkeypatch):
+    tc, p, wa = cliente
+    monkeypatch.setattr(servidor, "limite_usuario", Limitador(1))
+    post_webhook(tc, evento(id="m1"))
+    post_webhook(tc, evento(id="m2"))
+    assert len(p.llamadas) == 1
+    assert wa.enviados[-1] == ("521@c.us", servidor.AVISO_LIMITE)

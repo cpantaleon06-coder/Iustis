@@ -95,6 +95,11 @@ def ingestar_fuente(fuente: str, modulo: str, dir_raw: Path, dir_salida: Path) -
         "metadata_pendiente": pendientes,
         "total_articulos": len(res.articulos),
         "derogados": [a.id for a in res.articulos if a.derogado],
+        "advertencias": [
+            {"id": a.id, "linea": a.linea_origen, "motivos": a.advertencias}
+            for a in res.articulos
+            if a.advertencias
+        ],
         "incompletos": [
             {"id": a.id, "linea": a.linea_origen, "motivos": a.motivos_incompleto}
             for a in res.articulos
@@ -104,6 +109,7 @@ def ingestar_fuente(fuente: str, modulo: str, dir_raw: Path, dir_salida: Path) -
         "duplicados": res.duplicados,
         "encabezados_descartados": res.encabezados_descartados,
         "lineas_ruido_eliminadas": res.lineas_ruido_eliminadas,
+        "notas_de_encabezados": res.notas_de_encabezados,
         "lineas_transitorios_omitidas": res.lineas_transitorios_omitidas,
         "lineas_previas_al_primer_articulo": res.texto_previo_descartado,
     }
@@ -118,9 +124,13 @@ def imprimir_reporte(r: dict) -> None:
         print(f"  AVISO metadata con PLACEHOLDER: {', '.join(r['metadata_pendiente'])}")
     if r["codificacion"] != "utf-8":
         print(f"  AVISO el archivo no estaba en UTF-8, se leyó como {r['codificacion']}")
-    print(f"  Incompletos: {len(r['incompletos'])}")
+    print(f"  Incompletos (no se indexan): {len(r['incompletos'])}")
     for inc in r["incompletos"]:
         print(f"    - {inc['id']} (línea {inc['linea']}): {'; '.join(inc['motivos'])}")
+    if r["advertencias"]:
+        print(f"  Advertencias (sí se indexan, revisar contra la fuente): {len(r['advertencias'])}")
+        for adv in r["advertencias"]:
+            print(f"    - {adv['id']} (línea {adv['linea']}): {'; '.join(adv['motivos'])}")
     if r["derogados"]:
         print(f"  Derogados: {', '.join(r['derogados'])}")
     if r["saltos_numeracion"]:
