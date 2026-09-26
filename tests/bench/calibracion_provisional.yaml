@@ -1,0 +1,36 @@
+# SET PROVISIONAL DE CALIBRACIÓN (no es el banco oficial).
+#
+# Lo redactó el asistente de desarrollo solo para fijar un umbral de abstención inicial
+# mientras el equipo escribe tests/bench/preguntas.yaml. No contiene datos legales: solo
+# consultas de usuario y si el sistema debería intentar responder (hay un módulo que
+# cubre el tema) o abstenerse (el tema no está en ningún módulo cargado).
+#
+# Uso:  python -m rag.calibrar --banco tests/bench/calibracion_provisional.yaml
+# Cuando exista el banco oficial, recalibrar con él.
+
+preguntas:
+  # Dentro de los módulos cargados
+  - {id: CT01, modulo: transito_cdmx, esperado: responder, pregunta: "me multaron por estacionarme en la banqueta, cuánto es la multa?"}
+  - {id: CT02, modulo: transito_cdmx, esperado: responder, pregunta: "se llevaron mi carro al corralón porque estaba en doble fila, qué hago?"}
+  - {id: CT03, modulo: transito_cdmx, esperado: responder, pregunta: "un agente me paró por ir hablando por celular mientras manejaba"}
+  - {id: CT04, modulo: transito_cdmx, esperado: responder, pregunta: "me agarraron en el alcoholímetro, qué me va a pasar?"}
+  - {id: CT05, modulo: transito_cdmx, esperado: responder, pregunta: "puedo ir en moto sin casco si es un tramo corto?"}
+  - {id: CT06, modulo: transito_cdmx, esperado: responder, pregunta: "me pasé un semáforo en rojo y me llegó una fotomulta"}
+  - {id: CL01, modulo: laboral_despido, esperado: responder, pregunta: "me corrieron sin darme nada por escrito, qué derechos tengo?"}
+  - {id: CL02, modulo: laboral_despido, esperado: responder, pregunta: "llevo 5 años en la empresa y me despidieron, cuánto me deben pagar?"}
+  - {id: CL03, modulo: laboral_despido, esperado: responder, pregunta: "mi patrón no me quiere pagar el aguinaldo porque renuncié en octubre"}
+  - {id: CL04, modulo: laboral_despido, esperado: responder, pregunta: "me obligaron a firmar mi renuncia para no pagarme la liquidación"}
+  - {id: CL05, modulo: laboral_despido, esperado: responder, pregunta: "no me dieron mis vacaciones en todo el año, me las tienen que pagar?"}
+  - {id: CL06, modulo: laboral_despido, esperado: responder, pregunta: "me despidieron por estar embarazada"}
+
+  # Fuera de los módulos cargados
+  - {id: CX01, modulo: null, esperado: abstenerse, pregunta: "quiero divorciarme pero mi esposo no quiere firmar"}
+  - {id: CX02, modulo: null, esperado: abstenerse, pregunta: "el papá de mis hijos no quiere pasar pensión alimenticia"}
+  - {id: CX03, modulo: null, esperado: abstenerse, pregunta: "mi casero no me quiere regresar el depósito de la renta"}
+  - {id: CX04, modulo: null, esperado: abstenerse, pregunta: "mi abuelo murió sin testamento, cómo reclamo la herencia?"}
+  - {id: CX05, modulo: null, esperado: abstenerse, pregunta: "me robaron el celular en el metro, cómo pongo una denuncia?"}
+  - {id: CX06, modulo: null, esperado: abstenerse, pregunta: "el SAT me mandó una carta invitación, qué hago?"}
+  - {id: CX07, modulo: null, esperado: abstenerse, pregunta: "compré una lavadora que salió defectuosa y la tienda no me la cambia"}
+  - {id: CX08, modulo: null, esperado: abstenerse, pregunta: "un vecino construyó una barda que invade mi terreno"}
+  - {id: CX09, modulo: null, esperado: abstenerse, pregunta: "cómo registro una marca para mi negocio?"}
+  - {id: CX10, modulo: null, esperado: abstenerse, pregunta: "detuvieron a mi hermano y no nos dicen dónde está"}

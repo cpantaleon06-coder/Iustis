@@ -27,11 +27,36 @@ from rag.config import DATA, DIR_INDICE, cargar_config
 from rag.embeddings import Embedder, crear_embedder
 
 
-def texto_para_embedding(art: dict) -> str:
+MAX_CARACTERES_FRAGMENTO = 1200
+
+
+def encabezado_articulo(art: dict) -> str:
     encabezado = f"{art['ley']}, artículo {art['articulo']}"
     if art.get("ubicacion"):
         encabezado += f". {art['ubicacion']}"
-    return f"{encabezado}\n{art['texto']}"
+    return encabezado
+
+
+def texto_para_embedding(art: dict) -> str:
+    return f"{encabezado_articulo(art)}\n{art['texto']}"
+
+
+def fragmentos_de_articulo(art: dict, maximo: int = MAX_CARACTERES_FRAGMENTO) -> list[str]:
+    """Parte el artículo en fragmentos de párrafos consecutivos, cada uno con el encabezado
+    del artículo. Los modelos de embeddings solo leen el inicio de textos largos; así la
+    parte final de un artículo largo también queda representada en el índice."""
+    parrafos = [p.strip() for p in art["texto"].split("\n\n") if p.strip()] or [art["texto"]]
+    fragmentos, actual = [], ""
+    for p in parrafos:
+        if actual and len(actual) + len(p) > maximo:
+            fragmentos.append(actual)
+            actual = p
+        else:
+            actual = f"{actual}\n\n{p}" if actual else p
+    if actual:
+        fragmentos.append(actual)
+    encabezado = encabezado_articulo(art)
+    return [f"{encabezado}\n{f}" for f in fragmentos]
 
 
 def huella(ruta: Path) -> str:
@@ -64,11 +89,17 @@ def construir_indice(
     if not citables:
         raise ValueError(f"El módulo {modulo} no tiene artículos citables")
 
-    vectores = embedder.documentos([texto_para_embedding(a) for a in citables])
+    textos, fragmento_de = [], []
+    for i, art in enumerate(citables):
+        for fragmento in fragmentos_de_articulo(art):
+            textos.append(fragmento)
+            fragmento_de.append(i)
+    vectores = embedder.documentos(textos)
 
     destino = dir_indice / modulo
     destino.mkdir(parents=True, exist_ok=True)
     np.save(destino / "embeddings.npy", vectores)
+    np.save(destino / "fragmento_de.npy", np.array(fragmento_de, dtype=np.int32))
     with open(destino / "articulos.jsonl", "w", encoding="utf-8") as f:
         for art in citables:
             f.write(json.dumps(art, ensure_ascii=False) + "\n")
@@ -78,6 +109,7 @@ def construir_indice(
         "embedder": embedder.nombre,
         "dimension": int(vectores.shape[1]),
         "total_citables": len(citables),
+        "total_fragmentos": len(textos),
         "excluidos": excluidos,
         "huellas_procesado": huellas,
         "construido": datetime.now().isoformat(timespec="seconds"),

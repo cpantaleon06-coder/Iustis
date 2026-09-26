@@ -122,11 +122,7 @@ class Pipeline:
         urgente = por_tipo(cat, "emergencia") if triaje.urgencia == "alta" else None
         canalizacion = por_tipo(cat, "canalizacion")
 
-        criticos = [d for d in triaje.datos_faltantes if d.critico]
-        if criticos and not ya_pregunto and triaje.urgencia != "alta":
-            self.sesiones.guardar_pendiente(usuario, mensaje, criticos[0].pregunta)
-            return Resultado("pregunta", render.render_pregunta(criticos[0].pregunta), traza)
-
+        # Sin módulo para el área no tiene sentido pedir más datos: se canaliza de inmediato
         if not modulos:
             traza["abstencion"] = "área sin módulo"
             return Resultado(
@@ -134,6 +130,11 @@ class Pipeline:
                 render.render_abstencion("Todavía no tengo cargada la ley que aplica a tu caso.", canalizacion, urgente),
                 traza,
             )
+
+        criticos = [d for d in triaje.datos_faltantes if d.critico]
+        if criticos and not ya_pregunto and triaje.urgencia != "alta":
+            self.sesiones.guardar_pendiente(usuario, mensaje, criticos[0].pregunta)
+            return Resultado("pregunta", render.render_pregunta(criticos[0].pregunta), traza)
 
         consulta = consulta_de_busqueda(mensaje, triaje)
         k = self.config["recuperacion"]["k"]

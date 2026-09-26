@@ -10,7 +10,7 @@ Asistente de triaje legal de primer contacto por **WhatsApp** (y chat web), sin 
 
 En despidos, además, una **estimación de montos calculada por código** (no por el modelo), con la fórmula paso a paso.
 
-Proyecto para LexHack 2026. Mercado inicial: México.
+Proyecto para LexHack 2026. Mercado inicial: México. Corre sin costo: modelos de Groq (plan gratuito) y embeddings locales.
 
 ---
 
@@ -39,17 +39,19 @@ Otras garantías:
 WhatsApp (OpenWA) ─┐
 Chat web ──────────┴─> backend/ (FastAPI)
    1. Nota de voz -> texto (Groq Whisper)
-   2. Triaje (Claude Haiku 4.5, JSON validado): área, urgencia, datos faltantes
+   2. Triaje (Groq, gpt-oss-20b, JSON con esquema estricto): área, urgencia, datos faltantes
         - urgencia alta: bloque de emergencia primero
         - falta un dato crítico: una sola pregunta de seguimiento
         - área sin módulo cargado: abstención y canalización
-   3. Recuperación híbrida por módulo (Voyage + BM25, fusión RRF)
+   3. Recuperación híbrida por módulo (embeddings locales multilingual-e5 + BM25, fusión RRF)
    4. Compuerta 1: umbral de similitud
-   5. Respuesta (Claude Sonnet 5, JSON validado) solo con los artículos recuperados
+   5. Respuesta (Groq, gpt-oss-120b con respaldo en gpt-oss-20b) solo con los artículos recuperados
    6. Compuerta 2: cotejo literal de cada cita
    7. Calculadora laboral (código puro), si aplica
    8. Formato fijo de 5 secciones
 ```
+
+**Índice por fragmentos:** los modelos de embeddings solo leen el inicio de textos largos, así que cada artículo se indexa en fragmentos de párrafos consecutivos (con el encabezado del artículo) y su similitud es la de su mejor fragmento. Las citas siempre se verifican contra el artículo completo.
 
 **Por qué búsqueda híbrida:** la gente describe su problema en lenguaje coloquial ("me corrieron"), donde gana la búsqueda semántica, pero también usa términos exactos ("artículo 48", "corralón", "finiquito"), donde gana BM25. Si la consulta menciona un artículo por número ("art. 39-A"), ese artículo va primero.
 
@@ -78,15 +80,15 @@ Copia `.env.example` como `.env` y llena al menos:
 
 | Variable | Para qué |
 |---|---|
-| `ANTHROPIC_API_KEY` | Triaje y respuesta (Claude) |
-| `VOYAGE_API_KEY` | Embeddings para la búsqueda semántica |
-| `GROQ_API_KEY` | Notas de voz (opcional) |
+| `GROQ_API_KEY` | Triaje, respuesta y notas de voz. Groq tiene plan gratuito: https://console.groq.com |
 
-El corpus ya viene procesado en `data/processed/`. Construye el índice y levanta el servidor:
+No se necesita ninguna otra llave: los embeddings corren localmente en el CPU. Claude (`LLM_PROVEEDOR=anthropic`) y Voyage (`proveedor: voyage` en `rag/config.yaml`) quedan como opciones configurables.
+
+El corpus ya viene procesado en `data/processed/`. Construye el índice (la primera vez descarga el modelo de embeddings, alrededor de 1 GB) y levanta el servidor:
 
 ```bash
-python -m rag.index --probar-embeddings
-python -m rag.index --todos
+python -m rag.descargar_modelo      # baja el modelo de embeddings; reanuda si la conexión se corta
+python -m rag.index --todos         # indexa ambos módulos (unos minutos en CPU)
 uvicorn backend.main:app --port 8000
 ```
 
@@ -178,6 +180,7 @@ Estos datos legales se dejaron en blanco a propósito y el sistema los marca com
 - La compuerta 2 coteja las citas de forma exacta, pero en los textos libres ("qué está pasando", "cuándo necesitas un abogado") las afirmaciones legales sin cita solo se detectan por heurística (plazos, cifras, la palabra "artículo"). El banco de pruebas es la red para esos casos.
 - Las sesiones y los límites de uso viven en memoria: se reinician con el servidor.
 - OpenWA solo cubre WhatsApp; no hay canal SMS.
+- El plan gratuito de Groq permite 8,000 tokens por minuto por modelo: alcanza para una conversación a la vez. Ante un límite, el sistema espera lo que indica Groq o pasa la respuesta al modelo de respaldo; si ambos están saturados, responde con un aviso y canaliza.
 - PyMuPDF (extracción de PDF) tiene licencia AGPL; conviene revisarlo antes de un uso comercial.
 
 ## Aviso

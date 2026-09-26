@@ -12,7 +12,7 @@ import argparse
 import json
 import sys
 
-from backend.llm import ClaudeLLM
+from backend.llm import crear_llm
 from backend.pipeline import Pipeline
 
 
@@ -22,7 +22,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--traza", action="store_true")
     args = ap.parse_args(argv)
 
-    pipeline = Pipeline(ClaudeLLM())
+    pipeline = Pipeline(crear_llm())
 
     def atender(texto: str) -> None:
         r = pipeline.procesar("cli", texto)

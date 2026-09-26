@@ -23,7 +23,7 @@ class RespuestaVerificada:
 
 
 def cita_fuente(art: dict) -> str:
-    return f"{art['ley']}, art. {art['articulo']} (versión {art['fecha_version']})"
+    return f"{art['ley']}, art. {art['articulo']}, versión {art['fecha_version']}"
 
 
 def linea_institucion(i: Institucion) -> str:

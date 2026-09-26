@@ -79,6 +79,9 @@ class Recuperador:
         self.rrf_k = rrf_k
         self.articulos = [json.loads(l) for l in (base / "articulos.jsonl").read_text(encoding="utf-8").splitlines()]
         self.vectores = np.load(base / "embeddings.npy")
+        # Índice por fragmentos: la similitud de un artículo es la de su mejor fragmento
+        ruta_fragmentos = base / "fragmento_de.npy"
+        self.fragmento_de = np.load(ruta_fragmentos) if ruta_fragmentos.exists() else np.arange(len(self.articulos))
         self.bm25 = BM25Okapi([tokenizar(texto_para_embedding(a)) for a in self.articulos])
         self._por_clave = {self._clave(a["numero_base"], a["sufijo"]): i for i, a in enumerate(self.articulos)}
 
@@ -97,7 +100,9 @@ class Recuperador:
         return encontrados
 
     def buscar(self, consulta: str, k: int = 5) -> list[Recuperado]:
-        similitudes = self.vectores @ self.embedder.consulta(consulta)
+        por_fragmento = self.vectores @ self.embedder.consulta(consulta)
+        similitudes = np.full(len(self.articulos), -1.0, dtype=np.float32)
+        np.maximum.at(similitudes, self.fragmento_de, por_fragmento)
         puntajes_bm25 = self.bm25.get_scores(tokenizar(consulta))
 
         rrf = np.zeros(len(self.articulos))
@@ -110,6 +115,13 @@ class Recuperador:
 
         explicitos = self.referencias_explicitas(consulta)
         orden = explicitos + [int(i) for i in np.argsort(-rrf) if int(i) not in explicitos]
+        elegidos = orden[: max(k, len(explicitos))]
+        vecino = self._siguiente_del_capitulo(elegidos[0]) if elegidos and not explicitos else None
+        if vecino is not None and vecino not in elegidos and len(elegidos) > 1:
+            # Los códigos agrupan reglas relacionadas en artículos contiguos (el 47 enumera
+            # causas de rescisión, el 48 dice qué puede pedir el trabajador): el artículo
+            # siguiente al mejor resultado, si es del mismo capítulo, ocupa el último lugar.
+            elegidos[-1] = vecino
         return [
             Recuperado(
                 articulo=self.articulos[i],
@@ -118,8 +130,16 @@ class Recuperador:
                 rrf=float(rrf[i]),
                 referencia_explicita=i in explicitos,
             )
-            for i in orden[: max(k, len(explicitos))]
+            for i in elegidos
         ]
+
+    def _siguiente_del_capitulo(self, i: int) -> int | None:
+        if i + 1 >= len(self.articulos):
+            return None
+        actual, siguiente = self.articulos[i], self.articulos[i + 1]
+        if actual.get("ubicacion") and siguiente.get("ubicacion") == actual.get("ubicacion"):
+            return i + 1
+        return None
 
 
 _cache: dict[str, Recuperador] = {}

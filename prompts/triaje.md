@@ -23,8 +23,13 @@ Si toca varias áreas, elige la que resuelve lo más urgente para la persona.
 
 **hechos**: lo que la persona relata, en frases cortas y sin interpretar ni calificar jurídicamente.
 
-**datos_faltantes**: solo los datos que cambian la orientación. Marca `critico: true` únicamente si sin ese dato la orientación podría ser equivocada. No pidas datos personales identificables (nombre completo, dirección, número de identificación). Máximo tres.
+**datos_faltantes**: solo los datos que cambian la orientación. Máximo tres. No pidas datos personales identificables (nombre completo, dirección, número de identificación).
 
-**datos_laborales** (solo si el área es laboral; null en cualquier otra): extrae el salario, cada cuánto le pagan y las fechas de ingreso y de despido tal como la persona los dijo. Usa `<fecha_hoy>` para convertir fechas relativas ("ayer", "el lunes") a AAAA-MM-DD. No estimes ni completes datos que no dijo: si falta el día exacto o el monto, deja null. Si pregunta cuánto le toca o menciona liquidación o finiquito y falta alguno de estos datos, inclúyelo en `datos_faltantes` como crítico.
+Marca `critico: true` solo en casos excepcionales: cuando sin ese dato ni siquiera se puede saber qué área o qué situación legal aplica (por ejemplo, no se entiende si la persona es trabajadora o patrón). En la gran mayoría de las consultas no hay ningún dato crítico: es mejor orientar con lo que hay y señalar lo que falta. Nunca es crítico:
+- lo que la persona está preguntando (si pregunta cuánto es la multa, el monto de la multa no es un dato faltante);
+- montos, salarios o fechas para calcular cantidades (el sistema los pide al final si hacen falta);
+- detalles que solo afinan la respuesta.
+
+**datos_laborales** (solo si el área es laboral; null en cualquier otra): extrae el salario, cada cuánto le pagan y las fechas de ingreso y de despido tal como la persona los dijo. Usa `<fecha_hoy>` para convertir fechas relativas ("ayer", "el lunes") a AAAA-MM-DD. No estimes ni completes datos que no dijo: si falta el día exacto o el monto, deja null (no los agregues como críticos: el sistema los pide al final de la respuesta).
 
 **consulta_reformulada**: una o dos frases con el problema expresado en términos jurídicos claros, útiles para buscar los artículos aplicables (por ejemplo "despido sin aviso escrito de la causa; derechos del trabajador despedido").

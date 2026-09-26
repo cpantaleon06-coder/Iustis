@@ -101,7 +101,7 @@ def test_respuesta_completa_con_cita_verificada(armar):
     for seccion in ["*Qué está pasando*", "*Tus derechos*", "*Qué hacer ahora*", "*A dónde acudir*", "*Cuándo necesitas un abogado*"]:
         assert seccion in r.texto
     assert f'"{CITA_BUENA.texto_literal}"' in r.texto
-    assert "Ley Ficticia de Naves y Robots, art. 3 (versión 2000-01-01)" in r.texto
+    assert "Ley Ficticia de Naves y Robots, art. 3, versión 2000-01-01" in r.texto
     assert "Consejo Ficticio de Robots: 111" in r.texto
     assert r.traza["citas_validas"] == ["LFN-3"]
 
@@ -295,3 +295,9 @@ def test_claude_llm_sin_credenciales_es_error_controlado():
     llm = ClaudeLLM(SimpleNamespace(messages=SimpleNamespace(parse=sin_llave)))
     with pytest.raises(ErrorLLM, match="ANTHROPIC_API_KEY"):
         llm.triaje("hola")
+
+
+def test_area_sin_modulo_no_pregunta_datos(armar):
+    falta = DatoFaltante(dato="monto", pregunta="¿Cuánto era el depósito?", critico=True)
+    r = armar(LLMFalso([triaje(area="civil", datos_faltantes=[falta])])).procesar("u1", "no me regresan el depósito")
+    assert r.tipo == "abstencion" and "Cuánto era el depósito" not in r.texto

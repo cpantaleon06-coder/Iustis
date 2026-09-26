@@ -210,7 +210,7 @@ def test_yaml_real_no_trae_cifras_legales():
 def test_render_marca_pendientes_y_muestra_formula():
     texto = render_calculo(calcular())
     assert "Escenario: si el despido resulta injustificado." in texto
-    assert "• Indemnización ficticia\n  Fundamento: Ley Ficticia de Pagos, art. 10 (versión 2000-01-01)" in texto
+    assert "• Indemnización ficticia\n  Fundamento: Ley Ficticia de Pagos, art. 10, versión 2000-01-01" in texto
     assert "7 días × $300.00 = $2,100.00" in texto
     assert "[PENDIENTE DE VERIFICACIÓN]" in texto  # la prima ficticia no está verificada
     assert "[INCLUYE CIFRAS PENDIENTES DE VERIFICACIÓN]" in texto

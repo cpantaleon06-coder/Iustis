@@ -44,8 +44,8 @@ ABSTENCION_CORRECTA = "abstencion_correcta"
 RESPUESTA_INDEBIDA = "respuesta_indebida"
 ERROR = "error"
 
-# Cita tal como la escribe backend/render.py:  "texto"\n  (Ley, art. N (versión F))
-CITA_EN_SALIDA = re.compile(r'^  "(?P<texto>.+)"\n  \((?P<ley>.+), art\. (?P<art>.+?) \(versión [^)]*\)\)$', re.MULTILINE)
+# Cita tal como la escribe backend/render.py:  "texto"\n  (Ley, art. N, versión F)
+CITA_EN_SALIDA = re.compile(r'^  "(?P<texto>.+)"\n  \((?P<ley>.+), art\. (?P<art>.+?), versión [^)]*\)$', re.MULTILINE)
 
 
 # Banco
@@ -243,10 +243,10 @@ def main(argv: list[str] | None = None, pipeline=None) -> int:
     from rag.config import cargar_config
 
     if pipeline is None:
-        from backend.llm import ClaudeLLM
+        from backend.llm import crear_llm
         from backend.pipeline import Pipeline
 
-        pipeline = Pipeline(ClaudeLLM())
+        pipeline = Pipeline(crear_llm())
     corpus = cargar_corpus_por_etiqueta()
     anterior = ultima_corrida() if args.comparar else None
 

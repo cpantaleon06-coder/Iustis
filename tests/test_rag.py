@@ -136,3 +136,28 @@ def test_referencia_explicita_con_letra():
 
     m = REFERENCIA_ARTICULO.search(sin_acentos("¿qué dice el artículo 153-A?".lower()))
     assert m.group(1) == "153" and m.group(2) == "a"
+
+
+def test_fragmentos_cubren_todo_el_articulo_y_llevan_encabezado():
+    from rag.index import fragmentos_de_articulo
+
+    parrafos = [f"Párrafo ficticio {i} " + "x" * 500 for i in range(6)]
+    art = {"ley": "Ley Ficticia", "articulo": "47", "ubicacion": "CAPITULO IV", "texto": "\n\n".join(parrafos)}
+    frags = fragmentos_de_articulo(art, maximo=1200)
+    assert len(frags) == 3
+    assert all(f.startswith("Ley Ficticia, artículo 47. CAPITULO IV\n") for f in frags)
+    assert all(any(p in f for f in frags) for p in parrafos)  # ningún párrafo se pierde
+
+
+def test_similitud_de_articulo_es_la_de_su_mejor_fragmento(corpus_naves):
+    rec = corpus_naves["rec"]
+    assert len(rec.fragmento_de) >= len(rec.articulos)
+    r = rec.buscar("robot despedido estación orbital aviso escrito")[0]
+    assert r.id == "LFN-3" and r.similitud > 0
+
+
+def test_incluye_el_siguiente_articulo_del_mismo_capitulo(corpus_naves):
+    rec = corpus_naves["rec"]
+    ids = [r.id for r in rec.buscar("soy un robot y me despidieron de la estación orbital sin aviso escrito", k=3)]
+    # LFN-3 es el mejor resultado; LFN-4 (mismo capítulo, siguiente) debe estar en el contexto
+    assert ids[0] == "LFN-3" and "LFN-4" in ids and len(ids) == 3

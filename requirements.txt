@@ -11,9 +11,10 @@ pymupdf>=1.26        # extracción de texto de los PDF oficiales (licencia AGPL)
 PyYAML>=6.0
 numpy>=2.5
 rank-bm25>=0.2.2
-voyageai>=0.5
+sentence-transformers>=6.1   # embeddings locales (sin costo)
+voyageai>=0.5               # opcional
 
-# LLM
+# LLM (Groq se usa por HTTP con httpx; Anthropic es opcional)
 anthropic>=1.8
 
 # Pruebas

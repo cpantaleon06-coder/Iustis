@@ -14,3 +14,6 @@ tests/bench/resultados/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Modelos locales descargados (se bajan con: python -m rag.descargar_modelo)
+modelos/

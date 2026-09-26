@@ -1,16 +1,19 @@
 embeddings:
-  proveedor: voyage
-  # Confirmar con una llamada real en cuanto haya VOYAGE_API_KEY (python -m rag.index --probar-embeddings)
-  modelo: voyage-4
+  # local: modelo multilingüe en el CPU, sin costo (se descarga de Hugging Face la primera vez)
+  # voyage: API de Voyage AI (requiere VOYAGE_API_KEY)
+  proveedor: local
+  modelo: intfloat/multilingual-e5-base
 
 recuperacion:
-  k: 5          # artículos que pasan como contexto a la generación
+  k: 4          # artículos que pasan como contexto a la generación (acotado por el límite de tokens de Groq)
   rrf_k: 60     # constante estándar de Reciprocal Rank Fusion
 
 verificacion:
-  # PROVISIONAL, SIN CALIBRAR. Similitud coseno mínima del mejor artículo para contestar.
-  # Se fija con: python -m rag.calibrar (usa el banco de pruebas).
-  umbral_similitud: 0.5
-  umbral_calibrado: false
+  # Similitud coseno mínima del mejor artículo para contestar (embeddings locales multilingual-e5-base).
+  # Calibrado el 2026-09-25 con tests/bench/calibracion_provisional.yaml (21/22 bien separadas;
+  # dentro de módulos 0.843 a 0.873, fuera 0.799 a 0.843). Recalibrar con el banco oficial:
+  #   python -m rag.calibrar --escribir
+  umbral_similitud: 0.835
+  umbral_calibrado: true
   # Una cita textual debe tener al menos estos caracteres (evita "citas" triviales)
   cita_min_caracteres: 20

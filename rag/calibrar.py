@@ -72,9 +72,9 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     llm = None
     if not args.sin_triaje:
-        from backend.llm import ClaudeLLM
+        from backend.llm import crear_llm
 
-        llm = ClaudeLLM()
+        llm = crear_llm()
 
     preguntas = (yaml.safe_load(args.banco.read_text(encoding="utf-8")) or {}).get("preguntas") or []
     if not preguntas:

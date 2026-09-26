@@ -63,10 +63,10 @@ def verificar_limite_web(usuario: str, request: Request) -> None:
 
 def pipeline() -> Pipeline:
     if _estado["pipeline"] is None:
-        from backend.llm import ClaudeLLM
+        from backend.llm import crear_llm
 
         try:
-            _estado["pipeline"] = Pipeline(ClaudeLLM())
+            _estado["pipeline"] = Pipeline(crear_llm())
         except Exception as e:  # llaves faltantes, índice sin construir, etc.
             log.error("No se pudo iniciar el pipeline: %s", e)
             raise HTTPException(503, f"Servicio no disponible: {e}") from e
@@ -201,7 +201,13 @@ def salud():
     v = cargar_config()["verificacion"]
     return {
         "ok": True,
-        "llaves": {k: bool(os.getenv(k)) for k in ["ANTHROPIC_API_KEY", "VOYAGE_API_KEY", "GROQ_API_KEY", "OPENWA_API_KEY"]},
+        "llm": os.getenv("LLM_PROVEEDOR", "groq"),
+        "embeddings": cargar_config()["embeddings"],
+        "llaves": {
+            k: bool(os.getenv(k))
+            for k in ["GROQ_API_KEY", "OPENWA_API_KEY", "OPENWA_WEBHOOK_SECRET"]
+            + (["ANTHROPIC_API_KEY"] if os.getenv("LLM_PROVEEDOR") == "anthropic" else [])
+        },
         "umbral_similitud": v["umbral_similitud"],
         "umbral_calibrado": v["umbral_calibrado"],
     }
