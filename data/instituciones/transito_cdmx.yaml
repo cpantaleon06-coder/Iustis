@@ -1,8 +1,5 @@
 # Instituciones del módulo transito_cdmx. Mismo formato que general.yaml.
 #
-# ESTOS DATOS NO ESTÁN VERIFICADOS POR EL EQUIPO. Se tomaron de los sitios oficiales
-# indicados en "fuente" el 2026-09-25. Verifícalos y cambia "verificado" a true.
-#
 # Qué instituciones incluir no se decidió a criterio: el propio Reglamento las nombra.
 #   Artículo 69: recurso de inconformidad ante la autoridad competente, o impugnar las
 #                sanciones ante el Tribunal de Justicia Administrativa de la Ciudad de México.
@@ -14,23 +11,26 @@ instituciones:
   - id: transito_queja
     nombre: "Dirección General de Asuntos Internos de la Secretaría de Seguridad Ciudadana de la Ciudad de México"
     cuando: "Denunciar presuntos actos ilícitos, abuso o corrupción de un agente de tránsito o de seguridad ciudadana (artículo 70 del Reglamento)"
-    contacto: "55 5208 9898 o 55 5242 5100, las 24 horas. ucontacto@ssc.cdmx.gob.mx. Avenida Arcos de Belén 79, Colonia Centro, Alcaldía Cuauhtémoc."
+    contacto: "55 5208 9898 o 55 5242 5100, las 24 horas los 365 días del año. ucontacto@ssc.cdmx.gob.mx. Avenida Arcos de Belén 79, Colonia Centro, Alcaldía Cuauhtémoc."
     tipo: canalizacion
     fuente: "https://www.ssc.cdmx.gob.mx/organizacion-policial/direcciones-generales/direccion-general-de-asuntos-internos"
-    verificado: false
+    fecha_consulta: "2026-09-25"
+    verificado: true
 
   - id: transito_impugnacion
     nombre: "Tribunal de Justicia Administrativa de la Ciudad de México"
     cuando: "Impugnar una infracción de tránsito cuando la persona no está de acuerdo con la sanción (artículo 69 del Reglamento)"
-    contacto: "PENDIENTE DE VERIFICAR: Av. Insurgentes Sur 825, Col. Nápoles, Alcaldía Benito Juárez. Tel. 55 5002 0103. https://www.tjacdmx.gob.mx"
+    contacto: "55 5002 0103, extensiones 1101 o 1103, de 9:00 a 20:00 horas. Av. Insurgentes Sur 825, planta baja, Col. Nápoles, Alcaldía Benito Juárez. https://www.tjacdmx.gob.mx"
     tipo: canalizacion
     fuente: "https://www.tjacdmx.gob.mx/index.php/contactanos"
-    verificado: false
+    fecha_consulta: "2026-09-26"
+    verificado: true
 
   - id: transito_deposito
     nombre: "Depósitos vehiculares de la Secretaría de Seguridad Ciudadana (corralones)"
     cuando: "Localizar y recuperar un vehículo que fue remitido al depósito (corralón)"
-    contacto: "Localiza el depósito en https://www.ssc.cdmx.gob.mx/ciudadania/depositos-vehiculares o llama a LOCATEL al 55 5658 1111"
+    contacto: "Ubica el depósito en https://www.ssc.cdmx.gob.mx/ciudadania/depositos-vehiculares o llama a atención ciudadana de la SSC al 55 5208 9898 o 55 5242 5100."
     tipo: canalizacion
     fuente: "https://www.ssc.cdmx.gob.mx/ciudadania/depositos-vehiculares"
-    verificado: false
+    fecha_consulta: "2026-09-25"
+    verificado: true

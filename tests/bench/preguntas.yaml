@@ -1,27 +1,224 @@
-# Banco de pruebas (lo redactan los autores del proyecto).
-# Lo usan: python -m rag.calibrar (umbral) y el reporte del banco (paso 7).
+# Banco de pruebas del asistente.
+#
+# QUIÉN LO ESCRIBIÓ Y QUÉ MIDE (importante): esta primera versión la redactó el asistente
+# de desarrollo, no un abogado. Las citas esperadas se eligieron leyendo los artículos del
+# corpus, pero siguen siendo UNA LECTURA. Por eso, tal como está, el banco mide si el
+# sistema coincide con esa lectura, no si coincide con la de un abogado.
+#
+# QUÉ DEBE HACER EL EQUIPO: revisar pregunta por pregunta si "citas_esperadas" es el
+# artículo que ustedes citarían. Cambiar lo que haga falta. A partir de ahí el banco sí
+# mide calidad jurídica y sirve para calibrar el umbral.
+#
+# Uso:
+#   python -m tests.bench.run_bench --validar     revisa el banco sin llamar a ningún modelo
+#   python -m tests.bench.run_bench --comparar    corre todo y compara con la corrida anterior
+#   python -m rag.calibrar --escribir             recalibra el umbral de abstención con este banco
 #
 # Campos:
-#   id               identificador corto único (T01, L01, X01...)
-#   modulo           id del módulo en data/modules.yaml, o null si la pregunta no pertenece a ningún módulo
+#   id               identificador corto único
+#   modulo           id del módulo en data/modules.yaml, o null si no pertenece a ninguno
 #   pregunta         tal como la escribiría una persona por WhatsApp
 #   esperado         responder | abstenerse
-#   citas_esperadas  ids de artículo (por ejemplo LFT-48); cuenta como correcta si cita AL MENOS UNO.
-#                    Vacío si debe abstenerse. Los ids exactos están en data/processed/<fuente>.jsonl
+#   citas_esperadas  ids de artículo; cuenta como correcta si cita AL MENOS UNO
 #   seguimiento      opcional: lo que contestaría la persona si el asistente le pide un dato
 #   notas            opcional
 #
-# Antes de correr el banco (cuesta llamadas a Claude), revísalo gratis con:
-#   python -m tests.bench.run_bench --validar
-#
-# Incluyan también preguntas del área correcta que el corpus NO cubre: son las que
-# mejor calibran el umbral de abstención.
-#
-# Ejemplo de forma (no es contenido real):
-#   - id: L01
-#     modulo: laboral_despido
-#     pregunta: "..."
-#     esperado: responder
-#     citas_esperadas: [LFT-000]
+# Las preguntas marcadas con "notas: recuperación falla hoy" son las que el sistema no
+# resuelve bien todavía: se dejaron a propósito para que se noten las mejoras.
 
-preguntas: []
+preguntas:
+
+  # ---------------- Tránsito CDMX ----------------
+
+  - id: T01
+    modulo: transito_cdmx
+    pregunta: "me multaron por estacionarme en la banqueta, cuánto es la multa?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-30, RTCDMX-29]
+
+  - id: T02
+    modulo: transito_cdmx
+    pregunta: "se llevaron mi carro al corralón porque estaba en doble fila, cómo lo recupero?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-67]
+
+  - id: T03
+    modulo: transito_cdmx
+    pregunta: "me pararon en el alcoholímetro, qué me pueden hacer?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-50, RTCDMX-51, RTCDMX-52]
+
+  - id: T04
+    modulo: transito_cdmx
+    pregunta: "puedo andar en moto sin casco si es aquí cerca?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-37]
+
+  - id: T05
+    modulo: transito_cdmx
+    pregunta: "me multaron por ir hablando por celular mientras manejaba, es válido?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-38]
+
+  - id: T06
+    modulo: transito_cdmx
+    pregunta: "mi hijo de 4 años puede ir en el asiento de adelante?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-39]
+
+  - id: T07
+    modulo: transito_cdmx
+    pregunta: "iba cruzando la calle a pie y un coche no me dio el paso, tenía yo la preferencia?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-5, RTCDMX-6]
+
+  - id: T08
+    modulo: transito_cdmx
+    pregunta: "un agente de tránsito me pidió dinero para no infraccionarme, dónde lo denuncio?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-70]
+    notas: "recuperación falla hoy: el artículo 70 no aparece entre los recuperados"
+
+  - id: T09
+    modulo: transito_cdmx
+    pregunta: "no estoy de acuerdo con mi multa, puedo pelearla en algún lado?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-69]
+    notas: "recuperación falla hoy: el artículo 69 no aparece entre los recuperados"
+
+  - id: T10
+    modulo: transito_cdmx
+    pregunta: "a qué velocidad puedo ir en una avenida de la ciudad?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-9]
+
+  - id: T11
+    modulo: transito_cdmx
+    pregunta: "qué dice el artículo 30 del reglamento de tránsito?"
+    esperado: responder
+    citas_esperadas: [RTCDMX-30]
+    notas: "prueba la referencia explícita por número de artículo"
+
+  # ---------------- Laboral: despido ----------------
+
+  - id: L01
+    modulo: laboral_despido
+    pregunta: "me corrieron del trabajo y no me dieron nada por escrito, qué derechos tengo?"
+    esperado: responder
+    citas_esperadas: [LFT-47, LFT-48]
+
+  - id: L02
+    modulo: laboral_despido
+    pregunta: "si el despido fue injustificado, qué me tienen que pagar?"
+    esperado: responder
+    citas_esperadas: [LFT-48, LFT-50]
+    notas: "recuperación falla hoy: devuelve artículos de riesgos de trabajo"
+
+  - id: L03
+    modulo: laboral_despido
+    pregunta: "llevo 8 años en la empresa y me despidieron, me toca prima de antigüedad?"
+    esperado: responder
+    citas_esperadas: [LFT-162]
+
+  - id: L04
+    modulo: laboral_despido
+    pregunta: "renuncié en septiembre y no me quieren pagar el aguinaldo, me toca?"
+    esperado: responder
+    citas_esperadas: [LFT-87]
+
+  - id: L05
+    modulo: laboral_despido
+    pregunta: "no me dieron vacaciones en todo el año, me las tienen que pagar?"
+    esperado: responder
+    citas_esperadas: [LFT-76, LFT-77, LFT-79]
+
+  - id: L06
+    modulo: laboral_despido
+    pregunta: "falté tres días sin avisar, me pueden correr por eso?"
+    esperado: responder
+    citas_esperadas: [LFT-47]
+    notas: "recuperación falla hoy: devuelve artículos de trabajadores de autotransporte"
+
+  - id: L07
+    modulo: laboral_despido
+    pregunta: "me despidieron cuando les dije que estaba embarazada"
+    esperado: responder
+    citas_esperadas: [LFT-133, LFT-857]
+
+  - id: L08
+    modulo: laboral_despido
+    pregunta: "cuánto tiempo tengo para demandar después de que me despidieron?"
+    esperado: responder
+    citas_esperadas: [LFT-518]
+    notas: "recuperación falla hoy: no devuelve el artículo de prescripción"
+
+  - id: L09
+    modulo: laboral_despido
+    pregunta: "mi patrón me paga menos del salario mínimo, puede hacer eso?"
+    esperado: responder
+    citas_esperadas: [LFT-90, LFT-85]
+
+  - id: L10
+    modulo: laboral_despido
+    pregunta: "me obligaron a firmar mi renuncia para no pagarme la liquidación, eso vale?"
+    esperado: responder
+    citas_esperadas: [LFT-33, LFT-5]
+
+  - id: L11
+    modulo: laboral_despido
+    pregunta: "cuánto me toca de prima vacacional?"
+    esperado: responder
+    citas_esperadas: [LFT-80]
+
+  # ---------------- Fuera de los módulos cargados ----------------
+  # Estas calibran la abstención: son consultas legales reales, pero de áreas cuyo
+  # corpus todavía no está cargado. El asistente debe abstenerse y canalizar.
+
+  - id: X01
+    modulo: null
+    pregunta: "quiero divorciarme pero mi esposo no quiere firmar"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X02
+    modulo: null
+    pregunta: "el papá de mis hijos no quiere pasar pensión alimenticia"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X03
+    modulo: null
+    pregunta: "mi casero no me quiere regresar el depósito de la renta"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X04
+    modulo: null
+    pregunta: "mi abuelo murió sin testamento, cómo reclamo la herencia?"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X05
+    modulo: null
+    pregunta: "me robaron el celular en el metro, cómo pongo una denuncia?"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X06
+    modulo: null
+    pregunta: "compré una lavadora que salió defectuosa y la tienda no me la cambia"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X07
+    modulo: null
+    pregunta: "un vecino construyó una barda que invade mi terreno"
+    esperado: abstenerse
+    citas_esperadas: []
+
+  - id: X08
+    modulo: null
+    pregunta: "hola, buenas tardes"
+    esperado: abstenerse
+    citas_esperadas: []
+    notas: "saludo sin consulta: debe dar la bienvenida, no una respuesta jurídica"

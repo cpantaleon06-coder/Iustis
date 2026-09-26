@@ -11,6 +11,7 @@ from decimal import ROUND_HALF_UP, Decimal
 import pytest
 
 from backend.calculadora.laboral import (
+    cargar_corpus_citable,
     Calculadora,
     DatosTrabajador,
     antiguedad,
@@ -191,18 +192,37 @@ def test_fechas_invertidas():
     assert calcular(datos=d).calculados == []
 
 
-def test_yaml_real_no_trae_cifras_legales():
-    """El YAML del repositorio no debe traer ningún valor legal: todo es null o PLACEHOLDER."""
+def test_yaml_real_sigue_pendiente_de_verificacion_juridica():
+    """Ningún concepto del YAML real puede marcarse como verificado sin que un abogado
+    revise la interpretación. Este test evita que alguien lo cambie por descuido."""
     p = cargar_parametros()
-    assert p["salario_minimo_diario"]["valor"] is None
-    assert all(v is None for v in p["divisores_periodo"].values())
+    assert p["salario_minimo_diario"]["verificado"] is False
     for c in p["conceptos"]:
-        assert c["verificado"] is False
-        valores = [v for k, v in c["parametros"].items() if k not in ("proporcional", "concepto_base")]
-        assert all(v in (None, []) for v in valores), c["id"]
-        assert c["fundamento"]["articulo_id"] == "PLACEHOLDER"
-    res = Calculadora(p, CORPUS).calcular(DATOS)
-    assert res.calculados == []
+        assert c["verificado"] is False, f"{c['id']}: un abogado debe revisar el supuesto antes de marcarlo"
+
+
+@pytest.mark.skipif(not cargar_corpus_citable("laboral_despido"), reason="requiere el índice construido")
+def test_yaml_real_cita_literalmente_el_corpus():
+    """Cada cifra del YAML real debe apoyarse en una cita literal de la ley indexada.
+    Si alguien cambia un número sin cambiar la cita, o inventa una, este test falla."""
+    p = cargar_parametros()
+    corpus = cargar_corpus_citable("laboral_despido")
+    calc = Calculadora(p, corpus)
+    for c in p["conceptos"]:
+        art = calc._verificar_cita(c["fundamento"], "fundamento")  # lanza Faltante si no es literal
+        assert art["id"] == c["fundamento"]["articulo_id"]
+        if (c.get("tope_salario") or {}).get("fundamento"):
+            calc._verificar_cita(c["tope_salario"]["fundamento"], "tope_salario.fundamento")
+
+
+@pytest.mark.skipif(not cargar_corpus_citable("laboral_despido"), reason="requiere el índice construido")
+def test_yaml_real_calcula_los_conceptos_activos():
+    p = cargar_parametros()
+    res = Calculadora(p, cargar_corpus_citable("laboral_despido")).calcular(DATOS)
+    activos = {c["id"] for c in p["conceptos"] if c.get("activo") and (
+        "siempre" in c["supuestos"] or DATOS.supuesto in c["supuestos"])}
+    assert {c.id for c in res.calculados} == activos
+    assert res.total > 0 and not res.todo_verificado  # calcula, pero marcado como pendiente
 
 
 # Formato

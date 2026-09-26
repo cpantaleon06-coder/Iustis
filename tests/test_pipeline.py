@@ -322,3 +322,22 @@ def test_aviso_de_pendientes_aparece_una_sola_vez(armar):
     texto = render.render_respuesta(render.RespuestaVerificada("a", [], [], insts, "b"))
     assert texto.count(render.AVISO_PENDIENTE) == 1
     assert "[PENDIENTE DE VERIFICACIÓN]" not in texto
+
+
+# Catálogo real del repositorio (los tests anteriores usan catálogos de prueba)
+
+def test_catalogo_real_carga_y_esta_completo():
+    """Carga los YAML reales de data/instituciones. Detecta campos mal escritos o faltantes,
+    que los catálogos de prueba no cubrirían."""
+    from ingestion.ingest import cargar_modulos
+    from backend.instituciones import catalogo, por_tipo
+
+    for modulo in cargar_modulos():
+        cat = catalogo([modulo])
+        assert por_tipo(cat, "emergencia"), f"{modulo}: sin institución de emergencia"
+        assert por_tipo(cat, "canalizacion"), f"{modulo}: sin institución de canalización"
+        for i in cat.values():
+            assert i.nombre and i.cuando and i.contacto, i.id
+            assert "PLACEHOLDER" not in f"{i.nombre}{i.contacto}", f"{i.id}: quedó un PLACEHOLDER"
+            assert i.fuente.startswith("http"), f"{i.id}: la fuente debe ser una URL oficial"
+            assert i.fecha_consulta, f"{i.id}: falta fecha_consulta"

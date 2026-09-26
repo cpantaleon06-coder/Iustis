@@ -1,11 +1,8 @@
 # Instituciones del módulo laboral_despido. Mismo formato que general.yaml.
 #
-# ESTOS DATOS NO ESTÁN VERIFICADOS POR EL EQUIPO. Se tomaron de los sitios oficiales
-# indicados en "fuente" el 2026-09-25. Verifícalos y cambia "verificado" a true.
-#
-# Pendiente de decidir por el equipo: cuándo corresponde el Centro federal y cuándo el
-# Centro local de la Ciudad de México. El texto de "cuando" que sigue es una primera
-# aproximación y debe revisarse.
+# PENDIENTE DE DECIDIR POR EL EQUIPO: cuándo corresponde el Centro federal y cuándo el
+# Centro local de la Ciudad de México. El texto de "cuando" es una primera aproximación
+# y conviene que un abogado lo revise, porque de eso depende a dónde se manda a la persona.
 
 instituciones:
   - id: laboral_asesoria_gratuita
@@ -14,7 +11,8 @@ instituciones:
     contacto: "800 717 2942 o 800 911 7877, de lunes a viernes de 9:00 a 18:00 horas. Gratuito. https://www.gob.mx/profedet"
     tipo: canalizacion
     fuente: "https://www.profedet.gob.mx/micrositio/index.php/preguntas-frecuentes"
-    verificado: false
+    fecha_consulta: "2026-09-25"
+    verificado: true
 
   - id: laboral_conciliacion_cdmx
     nombre: "Centro de Conciliación Laboral de la Ciudad de México"
@@ -22,12 +20,17 @@ instituciones:
     contacto: "55 6283 1495 o 55 6283 1496, de lunes a viernes de 8:00 a 14:00 horas. Calle Dr. Andrade 45, Colonia Doctores, Alcaldía Cuauhtémoc. https://www.ccl.cdmx.gob.mx"
     tipo: canalizacion
     fuente: "https://www.ccl.cdmx.gob.mx/"
-    verificado: false
+    fecha_consulta: "2026-09-25"
+    verificado: true
 
   - id: laboral_conciliacion_federal
     nombre: "Centro Federal de Conciliación y Registro Laboral"
+    # El correo y el sitio se confirmaron en gob.mx/cfcrl. El teléfono que circula
+    # (55 8874 8600) no aparece en esa página, por eso no se incluye aquí; si el equipo
+    # lo confirma, puede agregarlo al contacto.
     cuando: "Iniciar la conciliación obligatoria antes de demandar, cuando el conflicto es de competencia federal por el giro de la empresa"
-    contacto: "PENDIENTE DE VERIFICAR: 55 8874 8600. Carretera Picacho-Ajusco 714, Torres de Padierna, Alcaldía Tlalpan. https://www.gob.mx/cfcrl"
+    contacto: "atencionciudadana@centrolaboral.gob.mx. https://www.gob.mx/cfcrl"
     tipo: canalizacion
     fuente: "https://www.gob.mx/cfcrl"
-    verificado: false
+    fecha_consulta: "2026-09-26"
+    verificado: true

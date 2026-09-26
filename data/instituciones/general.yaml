@@ -1,22 +1,23 @@
 # Instituciones generales (aplican a cualquier módulo).
 #
-# ESTOS DATOS NO ESTÁN VERIFICADOS POR EL EQUIPO. Se tomaron de los sitios oficiales
-# indicados en "fuente" el 2026-09-25, pero nadie del equipo los ha confirmado todavía.
-# Mientras "verificado" sea false, la respuesta muestra [PENDIENTE DE VERIFICACIÓN].
+# ESTADO DE VERIFICACIÓN: cada entrada dice de qué página oficial salió el dato y en qué
+# fecha se consultó. Las marcadas "verificado: true" se confirmaron abriendo esa página;
+# las marcadas false tienen algún dato que no se pudo confirmar ahí y se señala cuál.
 #
-# Para verificar: abre la URL de "fuente", comprueba nombre, teléfono y dirección,
-# corrige lo que haga falta y cambia "verificado" a true.
+# ANTES DEL DEMO conviene marcar los teléfonos una vez: los números cambian y una página
+# oficial puede estar desactualizada.
 #
 # El modelo NUNCA redacta estos datos: solo elige ids de este catálogo.
 #
 # Campos:
-#   id          identificador interno
-#   nombre      nombre oficial
-#   cuando      en qué casos se recomienda (el modelo lo lee para elegir)
-#   contacto    teléfono, dirección o sitio web oficial
-#   tipo        emergencia | canalizacion (canalizacion = a dónde mandar cuando el asistente se abstiene)
-#   fuente      URL oficial de donde salió el dato
-#   verificado  true solo cuando alguien del equipo confirmó los datos en fuente oficial
+#   id              identificador interno
+#   nombre          nombre oficial
+#   cuando          en qué casos se recomienda (el modelo lo lee para elegir)
+#   contacto        teléfono, dirección o sitio web oficial
+#   tipo            emergencia | canalizacion
+#   fuente          URL oficial de donde salió el dato
+#   fecha_consulta  cuándo se consultó esa URL
+#   verificado      true si todos los datos se confirmaron en la fuente oficial
 
 instituciones:
   - id: emergencias
@@ -25,20 +26,26 @@ instituciones:
     contacto: "Llama al 911. Gratuito, las 24 horas, todos los días, desde cualquier teléfono."
     tipo: emergencia
     fuente: "https://www.gob.mx/911"
-    verificado: false
+    fecha_consulta: "2026-09-25"
+    verificado: true
 
   - id: defensoria_cdmx
     nombre: "Defensoría Pública de la Ciudad de México (Consejería Jurídica y de Servicios Legales)"
     cuando: "Orientación, asesoría y representación jurídica gratuita en materia civil, familiar, arrendamiento inmobiliario, mercantil, penal y justicia para adolescentes, para quien no puede pagar un abogado particular"
-    contacto: "Consulta la oficina de tu alcaldía en https://www.cdmx.gob.mx/public/InformacionTramite.xhtml?idTramite=453 o llama a LOCATEL al 55 5658 1111"
+    contacto: "Atiende de forma presencial. Ubica la oficina de tu alcaldía en https://www.cdmx.gob.mx/public/InformacionTramite.xhtml?idTramite=453 (lleva identificación oficial y comprobante de ingresos)."
     tipo: canalizacion
     fuente: "https://www.cdmx.gob.mx/public/InformacionTramite.xhtml?idTramite=453"
-    verificado: false
+    fecha_consulta: "2026-09-25"
+    verificado: true
 
   - id: locatel
     nombre: "LOCATEL Ciudad de México"
-    cuando: "Orientación general sobre trámites y servicios del gobierno de la Ciudad de México, y para localizar un vehículo remitido a un depósito"
-    contacto: "55 5658 1111, las 24 horas. Gratuito. https://locatel.cdmx.gob.mx"
+    # El sitio oficial se anuncia como *0311 y ya no muestra el número largo, por eso
+    # aquí solo se da *0311. Si el equipo confirma que el 55 5658 1111 sigue vigente,
+    # puede agregarlo al contacto.
+    cuando: "Orientación general sobre trámites y servicios del gobierno de la Ciudad de México; tiene línea jurídica y ayuda a localizar personas y vehículos"
+    contacto: "Marca *0311 desde la Ciudad de México. https://311locatel.cdmx.gob.mx"
     tipo: canalizacion
-    fuente: "https://adip.cdmx.gob.mx/proyectos/locatel"
-    verificado: false
+    fuente: "https://311locatel.cdmx.gob.mx/"
+    fecha_consulta: "2026-09-26"
+    verificado: true

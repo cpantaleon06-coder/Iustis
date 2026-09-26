@@ -148,14 +148,16 @@ class Calculadora:
         return diario, f"Salario diario: {dinero(d.salario)} {d.periodo} ÷ {num(divisor)} = {dinero(diario)}"
 
     def _fundamento(self, c: dict) -> dict:
-        f = c.get("fundamento") or {}
-        art_id = _requerido(f.get("articulo_id"), "fundamento.articulo_id")
-        cita = _requerido(f.get("cita"), "fundamento.cita")
+        return self._verificar_cita(c.get("fundamento") or {}, "fundamento")
+
+    def _verificar_cita(self, f: dict, campo: str) -> dict:
+        art_id = _requerido((f or {}).get("articulo_id"), f"{campo}.articulo_id")
+        cita = _requerido((f or {}).get("cita"), f"{campo}.cita")
         if not self.corpus:
             raise Faltante("no hay corpus indexado para verificar el fundamento")
         r = verificar_cita(Cita(art_id, cita), self.corpus)
         if not r.valida:
-            raise Faltante(f"el fundamento no se pudo verificar contra el corpus ({r.motivo})")
+            raise Faltante(f"el {campo} no se pudo verificar contra el corpus ({r.motivo})")
         return r.articulo
 
     def _salario_base(self, c: dict, diario: Decimal, pasos: list[str]) -> Decimal:
@@ -163,6 +165,9 @@ class Calculadora:
         if "multiplo_salario_minimo" not in tope:
             return diario
         multiplo = Decimal(str(_requerido(tope["multiplo_salario_minimo"], "tope_salario.multiplo_salario_minimo")))
+        # El tope suele venir de un artículo distinto al del concepto; su cita se verifica igual
+        if tope.get("fundamento"):
+            self._verificar_cita(tope["fundamento"], "tope_salario.fundamento")
         sm = self.p["salario_minimo_diario"]
         minimo = Decimal(str(_requerido(sm["valor"], "salario_minimo_diario.valor")))
         limite = multiplo * minimo

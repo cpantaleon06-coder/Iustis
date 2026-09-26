@@ -24,6 +24,7 @@ class Institucion:
     tipo: str
     verificado: bool
     fuente: str = ""  # URL oficial de donde se tomó el dato, para poder verificarlo
+    fecha_consulta: str = ""  # cuándo se consultó esa fuente
 
     @property
     def pendiente(self) -> bool:

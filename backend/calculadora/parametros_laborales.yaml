@@ -1,18 +1,25 @@
 # Parámetros de la calculadora de despido.
 #
-# NINGÚN VALOR DE ESTE ARCHIVO ESTÁ VERIFICADO. Todos los números legales (días,
-# porcentajes, topes, divisores, salario mínimo) están en null a propósito: el equipo
-# debe llenarlos desde la ley vigente. Un concepto con algún parámetro en null no se
-# calcula y la respuesta explica qué falta.
+# ESTADO: las CIFRAS están tomadas literalmente de la Ley Federal del Trabajo que está
+# en el corpus (cada una lleva su cita, y el código la coteja carácter por carácter contra
+# el artículo antes de calcular). Lo que NO está verificado es la INTERPRETACIÓN JURÍDICA:
+# en qué supuesto aplica cada concepto. Por eso todos los conceptos siguen en
+# "verificado: false" y la respuesta muestra [PENDIENTE DE VERIFICACIÓN].
 #
-# Cada concepto requiere un fundamento:
-#   articulo_id  id del artículo en el corpus (por ejemplo LFT-000, ver data/processed/)
-#   cita         fragmento copiado literalmente del artículo. El código lo coteja contra
-#                el corpus indexado con el mismo verificador que las respuestas; si no
-#                coincide, el concepto no se calcula.
+# QUÉ DEBE REVISAR UN ABOGADO (lo importante no son los números, son estas decisiones):
+#   1. Si la prima de antigüedad debe pagarse siempre en un despido (se tomó del
+#      artículo 162 fracción III, que la concede a quienes "sean separados de su empleo,
+#      independientemente de la justificación o injustificación del despido").
+#   2. Si procede agregar los 20 días de salario por año del artículo 50 fracción II.
+#      Está DESACTIVADO a propósito: el artículo 50 se refiere a las indemnizaciones del
+#      artículo 49 (cuando el patrón queda eximido de reinstalar), no a todo despido.
+#      Activarlo sin ese análisis inflaría el monto.
+#   3. Si la tabla de vacaciones refleja bien el artículo 76 a partir del sexto año.
+#   4. Si deben incluirse salarios vencidos (artículo 48): dependen de la duración del
+#      juicio, así que no se calculan aquí.
+#   5. Si el salario reportado por la persona es el salario integrado del artículo 84.
 #
-# "verificado: true" solo cuando alguien del equipo revisó parámetros, fórmula y cita.
-# Mientras sea false, la cifra se muestra marcada como PENDIENTE DE VERIFICACIÓN.
+# Cuando un abogado confirme cada punto, cambia "verificado" a true en ese concepto.
 #
 # Tipos de fórmula disponibles (el código solo hace la aritmética):
 #   dias_fijos             parametros.dias × salario diario
@@ -23,84 +30,118 @@
 #                          proporcional al tiempo desde el último aniversario, × salario diario
 #   porcentaje_de_concepto parametros.porcentaje (%) × monto de parametros.concepto_base
 #
-# Tope opcional del salario base: tope_salario.multiplo_salario_minimo
-#   (el salario diario usado se limita a ese múltiplo del salario mínimo)
-#
-# supuestos: en qué escenario aplica el concepto. Valores reconocidos:
+# supuestos: en qué escenario aplica el concepto.
 #   siempre                 aplica en cualquier terminación de la relación
 #   despido_injustificado   solo si el despido resulta injustificado
 
 modulo: laboral_despido
 
 salario_minimo_diario:
-  valor: null            # PLACEHOLDER
-  vigencia: "PLACEHOLDER"
-  fuente: "PLACEHOLDER"
+  # Zona de Salarios Mínimos Generales (incluye la Ciudad de México).
+  # En la Zona Libre de la Frontera Norte es 440.87 y habría que cambiarlo aquí.
+  valor: 315.04
+  vigencia: "Vigente desde el 1 de enero de 2026"
+  fuente: "CONASAMI, publicado en el DOF el 9 de diciembre de 2025. https://www.gob.mx/conasami/articulos/se-publican-en-el-diario-oficial-de-la-federacion-los-salarios-minimos-vigentes-a-partir-del-1-de-enero-de-2026"
   verificado: false
 
-# Para convertir el salario que reporta la persona a salario diario
+# Artículo 89: "Cuando el salario se fije por semana o por mes, se dividirá entre siete
+# o entre treinta, según el caso, para determinar el salario diario."
+# El artículo no menciona el pago quincenal, por eso queda en null: si alguien reporta
+# salario quincenal, la calculadora lo dice en vez de suponer un divisor.
 divisores_periodo:
-  semanal: null          # PLACEHOLDER
-  quincenal: null        # PLACEHOLDER
-  mensual: null          # PLACEHOLDER
+  semanal: 7
+  quincenal: null
+  mensual: 30
 
 advertencias:
-  - "PLACEHOLDER: advertencias que deben acompañar toda estimación (por ejemplo, sobre la base salarial usada)"
+  - "Es una estimación de los conceptos básicos. No incluye salarios vencidos (dependen de la duración del juicio) ni descuentos o retenciones fiscales."
+  - "El cálculo usa el salario que reportaste. La ley manda usar el salario integrado (artículo 84), que puede ser mayor si recibes otras prestaciones."
 
 conceptos:
   - id: indemnizacion_despido
-    nombre: "PLACEHOLDER (sugerencia a verificar: indemnización por despido injustificado)"
+    nombre: "Indemnización constitucional (tres meses de salario)"
     activo: true
     supuestos: [despido_injustificado]
     tipo: dias_fijos
-    parametros: {dias: null}
-    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    parametros: {dias: 90}   # tres meses; revisar si debe calcularse como 3 × 30 días
+    fundamento:
+      articulo_id: "LFT-48"
+      cita: "que se le indemnice con el importe de tres meses de salario"
     verificado: false
 
   - id: indemnizacion_por_anio
-    nombre: "PLACEHOLDER (sugerencia a verificar: indemnización por año de servicio en los supuestos que la ley señale)"
-    activo: false        # definan en qué supuesto aplica antes de activarlo
+    nombre: "Indemnización de veinte días de salario por año de servicios"
+    # DESACTIVADO: ver el punto 2 del encabezado. Requiere análisis del artículo 49.
+    activo: false
     supuestos: [despido_injustificado]
     tipo: dias_por_anio
-    parametros: {dias_por_anio: null, proporcional: true}
-    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    parametros: {dias_por_anio: 20, proporcional: true}
+    fundamento:
+      articulo_id: "LFT-50"
+      cita: "la indemnización consistirá en veinte días de salario por cada uno de los años de servicios prestados"
     verificado: false
 
   - id: prima_antiguedad
-    nombre: "PLACEHOLDER (sugerencia a verificar: prima de antigüedad)"
+    nombre: "Prima de antigüedad"
     activo: true
     supuestos: [siempre]
     tipo: dias_por_anio
-    parametros: {dias_por_anio: null, proporcional: true}
-    tope_salario: {multiplo_salario_minimo: null}
-    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    parametros: {dias_por_anio: 12, proporcional: true}
+    tope_salario:
+      # El artículo 162 fracción II remite a los artículos 485 y 486 para el salario base
+      multiplo_salario_minimo: 2
+      fundamento:
+        articulo_id: "LFT-486"
+        cita: "se considerará esa cantidad como salario máximo"
+    fundamento:
+      articulo_id: "LFT-162"
+      cita: "La prima de antigüedad consistirá en el importe de doce días de salario, por cada año de servicios"
     verificado: false
 
   - id: aguinaldo_proporcional
-    nombre: "PLACEHOLDER (sugerencia a verificar: parte proporcional de aguinaldo)"
+    nombre: "Parte proporcional de aguinaldo"
     activo: true
     supuestos: [siempre]
     tipo: proporcional_anual
-    parametros: {dias_anuales: null}
-    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    parametros: {dias_anuales: 15}
+    fundamento:
+      articulo_id: "LFT-87"
+      cita: "equivalente a quince días de salario, por lo menos"
     verificado: false
 
   - id: vacaciones_proporcionales
-    nombre: "PLACEHOLDER (sugerencia a verificar: parte proporcional de vacaciones)"
+    nombre: "Parte proporcional de vacaciones"
     activo: true
     supuestos: [siempre]
     tipo: tabla_por_antiguedad
     parametros:
-      # filas {desde_anio, hasta_anio, dias}; hasta_anio null = sin límite superior
-      tabla: []
-    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+      # Artículo 76: 12 días el primer año, más 2 por cada año subsecuente hasta llegar a 20;
+      # a partir del sexto año, 2 días más por cada 5 de servicios.
+      # REVISAR: la lectura de los tramos a partir del sexto año es interpretación.
+      tabla:
+        - {desde_anio: 1, hasta_anio: 1, dias: 12}
+        - {desde_anio: 2, hasta_anio: 2, dias: 14}
+        - {desde_anio: 3, hasta_anio: 3, dias: 16}
+        - {desde_anio: 4, hasta_anio: 4, dias: 18}
+        - {desde_anio: 5, hasta_anio: 5, dias: 20}
+        - {desde_anio: 6, hasta_anio: 10, dias: 22}
+        - {desde_anio: 11, hasta_anio: 15, dias: 24}
+        - {desde_anio: 16, hasta_anio: 20, dias: 26}
+        - {desde_anio: 21, hasta_anio: 25, dias: 28}
+        - {desde_anio: 26, hasta_anio: 30, dias: 30}
+        - {desde_anio: 31, hasta_anio: 35, dias: 32}
+    fundamento:
+      articulo_id: "LFT-76"
+      cita: "en ningún caso podrá ser inferior a doce días laborables, y que aumentará en dos días laborables, hasta llegar a veinte, por cada año subsecuente de servicios"
     verificado: false
 
   - id: prima_vacacional
-    nombre: "PLACEHOLDER (sugerencia a verificar: prima vacacional)"
+    nombre: "Prima vacacional"
     activo: true
     supuestos: [siempre]
     tipo: porcentaje_de_concepto
-    parametros: {porcentaje: null, concepto_base: vacaciones_proporcionales}
-    fundamento: {articulo_id: "PLACEHOLDER", cita: "PLACEHOLDER"}
+    parametros: {porcentaje: 25, concepto_base: vacaciones_proporcionales}
+    fundamento:
+      articulo_id: "LFT-80"
+      cita: "una prima no menor de veinticinco por ciento sobre los salarios que les correspondan durante el período de vacaciones"
     verificado: false
