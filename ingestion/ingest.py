@@ -36,6 +36,12 @@ def cargar_modulos(ruta: Path = DATA / "modules.yaml") -> dict:
         return yaml.safe_load(f)["modulos"]
 
 
+def areas_de(conf: dict) -> list[str]:
+    """Un módulo puede cubrir varias áreas (el Código Civil abarca civil y familiar)."""
+    area = conf["area"]
+    return area if isinstance(area, list) else [area]
+
+
 def leer_crudo(ruta: Path) -> tuple[str, str]:
     """Devuelve (texto, codificacion). Intenta UTF-8 y luego Windows-1252."""
     datos = ruta.read_bytes()

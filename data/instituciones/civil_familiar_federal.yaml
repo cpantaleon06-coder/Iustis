@@ -1,0 +1,17 @@
+# Instituciones del módulo civil_familiar_federal. Mismo formato que general.yaml.
+#
+# PENDIENTE IMPORTANTE PARA EL EQUIPO: en materia familiar de la Ciudad de México
+# (divorcio, pensión alimenticia, custodia) la instancia natural es el Tribunal Superior
+# de Justicia de la CDMX y el DIF, y en consumo la PROFECO. No se agregaron aquí porque
+# no se alcanzaron a verificar sus datos en fuente oficial. Por ahora estas consultas se
+# canalizan a la Defensoría Pública de la CDMX, que sí atiende materia civil y familiar.
+
+instituciones:
+  - id: profeco_civil
+    nombre: "Procuraduría Federal del Consumidor (PROFECO), Teléfono del Consumidor"
+    cuando: "Cuando el conflicto es con una tienda, un proveedor o un servicio contratado como consumidor, y no entre particulares"
+    contacto: "55 5568 8722 o 800 468 8722, de lunes a viernes de 9:00 a 19:00 horas y fines de semana y días festivos de 10:00 a 18:00 horas. https://www.gob.mx/profeco"
+    tipo: canalizacion
+    fuente: "https://www.gob.mx/profeco/articulos/telefono-del-consumidor"
+    fecha_consulta: "2026-09-26"
+    verificado: true

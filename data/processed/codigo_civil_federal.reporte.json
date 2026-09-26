@@ -1,0 +1,537 @@
+{
+  "fuente": "codigo_civil_federal",
+  "modulo": "civil_familiar_federal",
+  "sha256_fuente": "048d249423cdf4695be1aa5b9f3b90629572f78b99238813c9529f0376e54ecf",
+  "codificacion": "utf-8",
+  "metadata_pendiente": [],
+  "total_articulos": 3085,
+  "derogados": [
+    "CCF-28-bis",
+    "CCF-56",
+    "CCF-88",
+    "CCF-93",
+    "CCF-94",
+    "CCF-95",
+    "CCF-96",
+    "CCF-130",
+    "CCF-139",
+    "CCF-140",
+    "CCF-141",
+    "CCF-142",
+    "CCF-143",
+    "CCF-144",
+    "CCF-145",
+    "CCF-149",
+    "CCF-150",
+    "CCF-151",
+    "CCF-152",
+    "CCF-153",
+    "CCF-154",
+    "CCF-155",
+    "CCF-157",
+    "CCF-160",
+    "CCF-166",
+    "CCF-167",
+    "CCF-170",
+    "CCF-171",
+    "CCF-173",
+    "CCF-174",
+    "CCF-175",
+    "CCF-181",
+    "CCF-214",
+    "CCF-229",
+    "CCF-237",
+    "CCF-238",
+    "CCF-239",
+    "CCF-240",
+    "CCF-271",
+    "CCF-295",
+    "CCF-373",
+    "CCF-394",
+    "CCF-402",
+    "CCF-403",
+    "CCF-404",
+    "CCF-405",
+    "CCF-406",
+    "CCF-407",
+    "CCF-408",
+    "CCF-409",
+    "CCF-415",
+    "CCF-435",
+    "CCF-451",
+    "CCF-499",
+    "CCF-506",
+    "CCF-636",
+    "CCF-639",
+    "CCF-641",
+    "CCF-642",
+    "CCF-643",
+    "CCF-644",
+    "CCF-645",
+    "CCF-1181",
+    "CCF-1182",
+    "CCF-1183",
+    "CCF-1184",
+    "CCF-1185",
+    "CCF-1186",
+    "CCF-1187",
+    "CCF-1188",
+    "CCF-1189",
+    "CCF-1190",
+    "CCF-1191",
+    "CCF-1192",
+    "CCF-1193",
+    "CCF-1194",
+    "CCF-1195",
+    "CCF-1196",
+    "CCF-1197",
+    "CCF-1198",
+    "CCF-1199",
+    "CCF-1200",
+    "CCF-1201",
+    "CCF-1202",
+    "CCF-1203",
+    "CCF-1204",
+    "CCF-1205",
+    "CCF-1206",
+    "CCF-1207",
+    "CCF-1208",
+    "CCF-1209",
+    "CCF-1210",
+    "CCF-1211",
+    "CCF-1212",
+    "CCF-1213",
+    "CCF-1214",
+    "CCF-1215",
+    "CCF-1216",
+    "CCF-1217",
+    "CCF-1218",
+    "CCF-1219",
+    "CCF-1220",
+    "CCF-1221",
+    "CCF-1222",
+    "CCF-1223",
+    "CCF-1224",
+    "CCF-1225",
+    "CCF-1226",
+    "CCF-1227",
+    "CCF-1228",
+    "CCF-1229",
+    "CCF-1230",
+    "CCF-1231",
+    "CCF-1232",
+    "CCF-1233",
+    "CCF-1234",
+    "CCF-1235",
+    "CCF-1236",
+    "CCF-1237",
+    "CCF-1238",
+    "CCF-1239",
+    "CCF-1240",
+    "CCF-1241",
+    "CCF-1242",
+    "CCF-1243",
+    "CCF-1244",
+    "CCF-1245",
+    "CCF-1246",
+    "CCF-1247",
+    "CCF-1248",
+    "CCF-1249",
+    "CCF-1250",
+    "CCF-1251",
+    "CCF-1252",
+    "CCF-1253",
+    "CCF-1254",
+    "CCF-1255",
+    "CCF-1256",
+    "CCF-1257",
+    "CCF-1258",
+    "CCF-1259",
+    "CCF-1260",
+    "CCF-1261",
+    "CCF-1262",
+    "CCF-1263",
+    "CCF-1264",
+    "CCF-1265",
+    "CCF-1266",
+    "CCF-1267",
+    "CCF-1268",
+    "CCF-1269",
+    "CCF-1270",
+    "CCF-1271",
+    "CCF-1272",
+    "CCF-1273",
+    "CCF-1274",
+    "CCF-1275",
+    "CCF-1276",
+    "CCF-1277",
+    "CCF-1278",
+    "CCF-1279",
+    "CCF-1280",
+    "CCF-1515",
+    "CCF-1613",
+    "CCF-1620",
+    "CCF-1927",
+    "CCF-2275",
+    "CCF-2407",
+    "CCF-2449",
+    "CCF-2450",
+    "CCF-2451",
+    "CCF-2452",
+    "CCF-2453",
+    "CCF-2485",
+    "CCF-2486",
+    "CCF-2488",
+    "CCF-2491",
+    "CCF-2494",
+    "CCF-2737",
+    "CCF-2738"
+  ],
+  "advertencias": [
+    {
+      "id": "CCF-177",
+      "linea": 1246,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-829",
+      "linea": 5134,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1791",
+      "linea": 9400,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1797",
+      "linea": 9442,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1799",
+      "linea": 9449,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1802",
+      "linea": 9459,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1811",
+      "linea": 9506,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1823",
+      "linea": 9557,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1831",
+      "linea": 9590,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1834-bis",
+      "linea": 9609,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1838",
+      "linea": 9634,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1850",
+      "linea": 9685,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1857",
+      "linea": 9711,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2061",
+      "linea": 10760,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2103",
+      "linea": 10918,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2162",
+      "linea": 11184,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2242",
+      "linea": 11502,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2478",
+      "linea": 12749,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2479",
+      "linea": 12754,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2484",
+      "linea": 12804,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2669",
+      "linea": 13709,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2687",
+      "linea": 13793,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2759",
+      "linea": 14175,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2763",
+      "linea": 14188,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2770",
+      "linea": 14220,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2855",
+      "linea": 14618,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2892",
+      "linea": 14787,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2943",
+      "linea": 15117,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2963",
+      "linea": 15197,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3012",
+      "linea": 15593,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3017",
+      "linea": 15662,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3022",
+      "linea": 15719,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3027",
+      "linea": 15760,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3043",
+      "linea": 15900,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3045",
+      "linea": 15956,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3046",
+      "linea": 15964,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3049",
+      "linea": 16042,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3054",
+      "linea": 16170,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-3058",
+      "linea": 16201,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    }
+  ],
+  "incompletos": [
+    {
+      "id": "CCF-1555",
+      "linea": 8344,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-1777",
+      "linea": 9332,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2033",
+      "linea": 10629,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2316",
+      "linea": 11858,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2345",
+      "linea": 12015,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    },
+    {
+      "id": "CCF-2859",
+      "linea": 14636,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    }
+  ],
+  "saltos_numeracion": [],
+  "duplicados": [],
+  "encabezados_descartados": [
+    {
+      "linea": 9341,
+      "texto": "Artículo 54.- Las enajenaciones de bienes inmuebles cuyo valor convencional sea mayor de quinientos pesos y",
+      "motivo": "número 54 menor al anterior 1777"
+    },
+    {
+      "linea": 10639,
+      "texto": "Artículo 54.- Las enajenaciones de bienes inmuebles cuyo valor convencional sea mayor de quinientos pesos y",
+      "motivo": "número 54 menor al anterior 2033"
+    },
+    {
+      "linea": 11867,
+      "texto": "Artículo 54.- Las enajenaciones de bienes inmuebles cuyo valor convencional sea mayor de quinientos pesos y",
+      "motivo": "número 54 menor al anterior 2316"
+    },
+    {
+      "linea": 12024,
+      "texto": "Artículo 54.- Las enajenaciones de bienes inmuebles cuyo valor convencional sea mayor de quinientos pesos y",
+      "motivo": "número 54 menor al anterior 2345"
+    }
+  ],
+  "lineas_ruido_eliminadas": 0,
+  "notas_de_encabezados": 42,
+  "lineas_transitorios_omitidas": 1236,
+  "lineas_previas_al_primer_articulo": 11
+}

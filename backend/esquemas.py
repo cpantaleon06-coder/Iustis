@@ -6,7 +6,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-Area = Literal["transito", "laboral", "constitucional", "civil", "penal", "fuera_de_alcance"]
+Area = Literal["transito", "laboral", "constitucional", "civil", "familiar", "penal", "mercantil", "fuera_de_alcance"]
 Urgencia = Literal["alta", "media", "baja"]
 
 

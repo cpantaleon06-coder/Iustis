@@ -1,0 +1,12 @@
+ley: "Código Nacional de Procedimientos Penales"
+abreviatura: "CNPP"
+jurisdiccion: "Nacional"
+fuente_url: "https://www.diputados.gob.mx/LeyesBiblio/pdf/CNPP.pdf"
+# Según el encabezado del propio documento
+fecha_version: "2025-11-28"
+fecha_consulta: "2026-09-26"
+
+excluir_transitorios: true
+ruido_regex: []
+
+# Texto extraído del PDF oficial con: python -m ingestion.extraer --tablas

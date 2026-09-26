@@ -10,7 +10,9 @@ Quienes escriben suelen no tener formación jurídica, escriben rápido desde el
 - transito: infracciones, multas, grúa o corralón, revisión por agentes de tránsito, licencias, accidentes viales sin lesionados graves
 - laboral: despido, salarios, prestaciones, finiquito o liquidación, condiciones de trabajo
 - constitucional: derechos fundamentales frente a autoridades (por ejemplo revisiones arbitrarias, discriminación por parte de una autoridad)
-- civil: arrendamiento, deudas entre particulares, contratos, familia
+- civil: arrendamiento, deudas entre particulares, contratos, propiedad, daños
+- familiar: divorcio, pensión alimenticia, custodia, patria potestad, herencias y sucesiones
+- mercantil: negocios, sociedades, comercio, pagarés y títulos de crédito, contratos entre empresas
 - penal: detenciones, denuncias, delitos, ser acusado o víctima de un delito
 - fuera_de_alcance: no encaja en ninguna, o no es consulta legal
 

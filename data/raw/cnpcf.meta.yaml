@@ -1,0 +1,12 @@
+ley: "Código Nacional de Procedimientos Civiles y Familiares"
+abreviatura: "CNPCF"
+jurisdiccion: "Nacional"
+fuente_url: "https://www.diputados.gob.mx/LeyesBiblio/pdf/CNPCF.pdf"
+# Según el encabezado del propio documento
+fecha_version: "2026-01-15"
+fecha_consulta: "2026-09-26"
+
+excluir_transitorios: true
+ruido_regex: []
+
+# Texto extraído del PDF oficial con: python -m ingestion.extraer --tablas

@@ -1,0 +1,18 @@
+# Instituciones del módulo penal_federal. Mismo formato que general.yaml.
+#
+# PENDIENTE IMPORTANTE PARA EL EQUIPO: falta la Fiscalía General de Justicia de la Ciudad
+# de México (denuncias del fuero común) y la Comisión de Derechos Humanos de la Ciudad de
+# México. No se agregaron porque no se alcanzaron a verificar sus datos en fuente oficial.
+# En materia penal, mandar a alguien a la instancia equivocada le cuesta tiempo crítico.
+
+instituciones:
+  - id: penal_defensoria_federal
+    nombre: "Instituto Federal de Defensoría Pública (DEFENSATEL)"
+    # El teléfono viene de un comunicado oficial de 2019, por eso no está verificado:
+    # confírmalo en el sitio antes del demo.
+    cuando: "Orientación y defensa jurídica gratuita en asuntos del fuero federal, y para saber si el caso lo puede atender una persona defensora pública"
+    contacto: "https://ifdp.oaj.gob.mx (ahí puedes ubicar la delegación más cercana y llenar el formulario de contacto). Línea DEFENSATEL reportada: 800 224 24 26."
+    tipo: canalizacion
+    fuente: "https://ifdp.oaj.gob.mx/servicios"
+    fecha_consulta: "2026-09-26"
+    verificado: false

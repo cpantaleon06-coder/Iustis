@@ -60,7 +60,11 @@ class EmbedderLocal:
     prefijos "passage: " para documentos y "query: " para consultas."""
 
     def __init__(self, modelo: str):
+        import torch
         from sentence_transformers import SentenceTransformer
+
+        # Por defecto torch usa la mitad de los núcleos; indexar en CPU es lo que más tarda
+        torch.set_num_threads(int(os.getenv("TORCH_THREADS", os.cpu_count() or 4)))
 
         from rag.descargar_modelo import dir_modelo
 

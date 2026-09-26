@@ -1,0 +1,26 @@
+{
+  "fuente": "cnpcf",
+  "modulo": "civil_familiar_federal",
+  "sha256_fuente": "a4cbe25b8c56d2a30a637a204de9a6dd06e1f19c8a3e24cbacfc57013a425591",
+  "codificacion": "utf-8",
+  "metadata_pendiente": [],
+  "total_articulos": 1191,
+  "derogados": [],
+  "advertencias": [],
+  "incompletos": [
+    {
+      "id": "CNPCF-1191",
+      "linea": 15325,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    }
+  ],
+  "saltos_numeracion": [],
+  "duplicados": [],
+  "encabezados_descartados": [],
+  "lineas_ruido_eliminadas": 0,
+  "notas_de_encabezados": 0,
+  "lineas_transitorios_omitidas": 0,
+  "lineas_previas_al_primer_articulo": 32
+}

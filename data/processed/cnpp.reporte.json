@@ -1,0 +1,47 @@
+{
+  "fuente": "cnpp",
+  "modulo": "penal_federal",
+  "sha256_fuente": "ef2e67d48f39f7b9260a8ec38717fb58d96b341fdc3d0aa263ffaed5dcf527d1",
+  "codificacion": "utf-8",
+  "metadata_pendiente": [],
+  "total_articulos": 490,
+  "derogados": [],
+  "advertencias": [
+    {
+      "id": "CNPP-192",
+      "linea": 3488,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CNPP-242",
+      "linea": 4223,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CNPP-466",
+      "linea": 7470,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CNPP-470",
+      "linea": 7582,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    }
+  ],
+  "incompletos": [],
+  "saltos_numeracion": [],
+  "duplicados": [],
+  "encabezados_descartados": [],
+  "lineas_ruido_eliminadas": 0,
+  "notas_de_encabezados": 0,
+  "lineas_transitorios_omitidas": 945,
+  "lineas_previas_al_primer_articulo": 11
+}

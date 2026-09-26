@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 from rank_bm25 import BM25Okapi
 
-from ingestion.ingest import cargar_modulos
+from ingestion.ingest import areas_de, cargar_modulos
 from rag.config import DATA, DIR_INDICE, cargar_config
 from rag.embeddings import Embedder, crear_embedder
 from rag.index import huella, texto_para_embedding
@@ -153,4 +153,4 @@ def recuperador_para(modulo: str) -> Recuperador:
 
 
 def modulos_por_area(area: str) -> list[str]:
-    return [k for k, v in cargar_modulos().items() if v.get("activo", True) and v["area"] == area]
+    return [k for k, v in cargar_modulos().items() if v.get("activo", True) and area in areas_de(v)]

@@ -1,0 +1,308 @@
+{
+  "fuente": "codigo_penal_federal",
+  "modulo": "penal_federal",
+  "sha256_fuente": "6333cb3cb9d42b07da1d46e1c421f16a10c0846dedaae10cd529e292c6fbdfaa",
+  "codificacion": "utf-8",
+  "metadata_pendiente": [],
+  "total_articulos": 539,
+  "derogados": [
+    "CPF-57",
+    "CPF-58",
+    "CPF-59",
+    "CPF-59-bis",
+    "CPF-78",
+    "CPF-79",
+    "CPF-80",
+    "CPF-81",
+    "CPF-82",
+    "CPF-83",
+    "CPF-88",
+    "CPF-89",
+    "CPF-90-bis",
+    "CPF-119",
+    "CPF-120",
+    "CPF-121",
+    "CPF-122",
+    "CPF-151",
+    "CPF-156",
+    "CPF-184",
+    "CPF-186",
+    "CPF-190",
+    "CPF-196-bis",
+    "CPF-207",
+    "CPF-215-A",
+    "CPF-215-B",
+    "CPF-215-C",
+    "CPF-215-D",
+    "CPF-240-bis",
+    "CPF-253-bis",
+    "CPF-255",
+    "CPF-256",
+    "CPF-257",
+    "CPF-258",
+    "CPF-264",
+    "CPF-267",
+    "CPF-268",
+    "CPF-269",
+    "CPF-270",
+    "CPF-271",
+    "CPF-273",
+    "CPF-274",
+    "CPF-275",
+    "CPF-276",
+    "CPF-294",
+    "CPF-296",
+    "CPF-299",
+    "CPF-306",
+    "CPF-309",
+    "CPF-310",
+    "CPF-311",
+    "CPF-321",
+    "CPF-324",
+    "CPF-326",
+    "CPF-327",
+    "CPF-328",
+    "CPF-344",
+    "CPF-345",
+    "CPF-346",
+    "CPF-347",
+    "CPF-348",
+    "CPF-349",
+    "CPF-350",
+    "CPF-351",
+    "CPF-352",
+    "CPF-353",
+    "CPF-354",
+    "CPF-355",
+    "CPF-356",
+    "CPF-357",
+    "CPF-358",
+    "CPF-359",
+    "CPF-360",
+    "CPF-361",
+    "CPF-362",
+    "CPF-365",
+    "CPF-365-bis",
+    "CPF-366-bis",
+    "CPF-368-quater",
+    "CPF-390",
+    "CPF-391",
+    "CPF-392",
+    "CPF-393",
+    "CPF-394"
+  ],
+  "advertencias": [
+    {
+      "id": "CPF-40",
+      "linea": 836,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-65",
+      "linea": 1185,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-70",
+      "linea": 1249,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-85",
+      "linea": 1401,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-162",
+      "linea": 2640,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-201-bis",
+      "linea": 3555,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-205",
+      "linea": 3669,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-224",
+      "linea": 4645,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-227",
+      "linea": 4892,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-233",
+      "linea": 4988,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-252",
+      "linea": 5455,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-259",
+      "linea": 5695,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-276-bis",
+      "linea": 5942,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-279",
+      "linea": 5971,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-281",
+      "linea": 6008,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-287",
+      "linea": 6105,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-343-quater",
+      "linea": 6564,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-363",
+      "linea": 6649,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-366",
+      "linea": 6686,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-366-quater",
+      "linea": 6733,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-386",
+      "linea": 7131,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-399-bis",
+      "linea": 7432,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-400-bis",
+      "linea": 7516,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-413",
+      "linea": 7830,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    },
+    {
+      "id": "CPF-423",
+      "linea": 8179,
+      "motivos": [
+        "termina sin puntuación final (revisar contra la fuente)"
+      ]
+    }
+  ],
+  "incompletos": [
+    {
+      "id": "CPF-429",
+      "linea": 8323,
+      "motivos": [
+        "contiene puntos suspensivos (posible omisión en la fuente)"
+      ]
+    }
+  ],
+  "saltos_numeracion": [],
+  "duplicados": [],
+  "encabezados_descartados": [
+    {
+      "linea": 8402,
+      "texto": "ARTICULO 1°.- Se derogan la fracción II del artículo 24 y los artículos 27, 70, 71 y 72 del Código",
+      "motivo": "número 1 menor al anterior 429"
+    },
+    {
+      "linea": 8405,
+      "texto": "ARTICULO 2°.- Se reforman los artículos 25, 65, 66 y 255 del propio Código Penal, para quedar como",
+      "motivo": "número 2 menor al anterior 429"
+    },
+    {
+      "linea": 8410,
+      "texto": "ARTICULO 4°.- Esta Ley entrará en vigor a partir de la fecha de su publicación en el \"Diario Oficial\".",
+      "motivo": "número 4 menor al anterior 429"
+    },
+    {
+      "linea": 8417,
+      "texto": "ARTICULO 2°.- Se deroga, en cuanto se oponga al presente ordenamiento, el artículo 162 del Código",
+      "motivo": "número 2 menor al anterior 429"
+    }
+  ],
+  "lineas_ruido_eliminadas": 0,
+  "notas_de_encabezados": 120,
+  "lineas_transitorios_omitidas": 4581,
+  "lineas_previas_al_primer_articulo": 16
+}

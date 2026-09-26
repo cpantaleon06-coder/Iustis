@@ -22,7 +22,7 @@ from pathlib import Path
 
 import numpy as np
 
-from ingestion.ingest import cargar_modulos
+from ingestion.ingest import areas_de, cargar_modulos
 from rag.config import DATA, DIR_INDICE, cargar_config
 from rag.embeddings import Embedder, crear_embedder
 
@@ -105,7 +105,7 @@ def construir_indice(
             f.write(json.dumps(art, ensure_ascii=False) + "\n")
     manifest = {
         "modulo": modulo,
-        "area": conf["area"],
+        "areas": areas_de(conf),
         "embedder": embedder.nombre,
         "dimension": int(vectores.shape[1]),
         "total_citables": len(citables),

@@ -1,0 +1,11 @@
+# Instituciones del módulo mercantil. Mismo formato que general.yaml.
+
+instituciones:
+  - id: profeco
+    nombre: "Procuraduría Federal del Consumidor (PROFECO), Teléfono del Consumidor"
+    cuando: "Quejas y asesoría gratuita cuando el problema es con un proveedor, una tienda o un servicio contratado como consumidor"
+    contacto: "55 5568 8722 o 800 468 8722, de lunes a viernes de 9:00 a 19:00 horas y fines de semana y días festivos de 10:00 a 18:00 horas. https://www.gob.mx/profeco"
+    tipo: canalizacion
+    fuente: "https://www.gob.mx/profeco/articulos/telefono-del-consumidor"
+    fecha_consulta: "2026-09-26"
+    verificado: true
