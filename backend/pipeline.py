@@ -174,7 +174,9 @@ class Pipeline:
         ]
         traza["descartes"] = descartes
 
-        if not verificada.derechos:
+        # Basta con que quede alguna cita verificada, esté en los derechos o en los pasos:
+        # a veces el modelo expresa la regla como un paso a seguir y no como un derecho.
+        if not verificada.derechos and not any(art for _, art in verificada.que_hacer):
             traza["abstencion"] = "ninguna cita verificable"
             return Resultado(
                 "abstencion",

@@ -341,3 +341,21 @@ def test_catalogo_real_carga_y_esta_completo():
             assert "PLACEHOLDER" not in f"{i.nombre}{i.contacto}", f"{i.id}: quedó un PLACEHOLDER"
             assert i.fuente.startswith("http"), f"{i.id}: la fuente debe ser una URL oficial"
             assert i.fecha_consulta, f"{i.id}: falta fecha_consulta"
+
+
+def test_responde_si_la_cita_verificada_esta_en_los_pasos(armar):
+    """El modelo a veces expresa la regla como paso y deja 'derechos' vacío. Si esa cita
+    está verificada, la respuesta debe salir en vez de tirarse."""
+    cita4 = CitaModelo(articulo_id="LFN-4", texto_literal="podrá acudir ante el Consejo Ficticio de Robots dentro del plazo de veinte ciclos")
+    gen = respuesta(derechos=[], que_hacer=[Paso(accion="Acude al Consejo dentro del plazo.", cita=cita4)])
+    llm = LLMFalso([triaje(consulta_reformulada="robot despedido consejo plazo aviso escrito")], gen)
+    r = armar(llm).procesar("u1", MENSAJE)
+    assert r.tipo == "respuesta"
+    assert "*Tus derechos*" not in r.texto  # la sección se omite si está vacía
+    assert "Acude al Consejo dentro del plazo. (Ley Ficticia de Naves y Robots, art. 4" in r.texto
+
+
+def test_sin_ninguna_cita_verificada_se_abstiene(armar):
+    gen = respuesta(derechos=[], que_hacer=[Paso(accion="Guarda tus documentos.", cita=None)])
+    r = armar(LLMFalso([triaje()], gen)).procesar("u1", MENSAJE)
+    assert r.tipo == "abstencion"

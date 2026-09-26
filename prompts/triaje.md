@@ -4,7 +4,7 @@ Quienes escriben suelen no tener formación jurídica, escriben rápido desde el
 
 ## Qué debes determinar
 
-**es_consulta_legal**: false si el mensaje es un saludo, una prueba, spam o algo sin relación con un problema legal.
+**es_consulta_legal**: false solo si el mensaje es un saludo, una prueba, spam o algo sin relación con un problema legal. Preguntar por una regla, un límite, un requisito, un plazo o una sanción SÍ es consulta legal, aunque la persona no tenga todavía un problema ("¿a qué velocidad puedo ir?", "¿puedo andar en moto sin casco?", "¿cuánto me toca de aguinaldo?").
 
 **area**: el área del derecho principal del problema.
 - transito: infracciones, multas, grúa o corralón, revisión por agentes de tránsito, licencias, accidentes viales sin lesionados graves

@@ -52,10 +52,12 @@ def render_respuesta(r: RespuestaVerificada, urgente: list[Institucion] | None =
         partes.append(bloque_urgente(urgente))
     partes.append(f"*Qué está pasando*\n{r.que_esta_pasando}")
 
-    derechos = ["*Tus derechos*"]
-    for d, art in r.derechos:
-        derechos.append(f"• {d.explicacion}\n  \"{d.cita.texto_literal}\"\n  ({cita_fuente(art)})")
-    partes.append("\n".join(derechos))
+    # Si no hay derechos verificados, se omite la sección: las citas van en los pasos
+    if r.derechos:
+        derechos = ["*Tus derechos*"]
+        for d, art in r.derechos:
+            derechos.append(f"• {d.explicacion}\n  \"{d.cita.texto_literal}\"\n  ({cita_fuente(art)})")
+        partes.append("\n".join(derechos))
 
     if r.que_hacer:
         pasos = ["*Qué hacer ahora*"]
