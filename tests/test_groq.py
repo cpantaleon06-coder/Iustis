@@ -76,10 +76,10 @@ def test_reintenta_tras_429_respetando_retry_after(monkeypatch):
 
 
 def test_limite_persistente_es_error_controlado(monkeypatch):
-    llm, esperas = cliente([httpx.Response(429, headers={"retry-after": "999"}, json={})] * 3, monkeypatch)
+    llm, esperas = cliente([httpx.Response(429, headers={"retry-after": "999"}, json={})] * 4, monkeypatch)
     with pytest.raises(ErrorLLM, match="429"):
         llm.triaje("x")
-    assert esperas == [60, 60]  # la espera se acota y al tercer intento se rinde
+    assert esperas == [60, 60, 60]  # la espera se acota a MAX_ESPERA_S y se rinde tras MAX_ESPERAS
 
 
 def test_json_que_no_cumple_esquema_se_reintenta(monkeypatch):
@@ -170,3 +170,23 @@ def test_acotar_articulo_conserva_parrafos_relevantes_literales():
     # cada fragmento conservado es literal del original
     assert all(f.strip() in texto for f in acotado.split("[...]") if f.strip())
     assert acotar_articulo("corto", "x", 100) == "corto"
+
+
+def test_espera_por_saturacion_no_gasta_reintentos_por_json_invalido(monkeypatch):
+    """Un 429 no debe consumir el presupuesto de reintentos por contenido: si después de
+    esperar el modelo devuelve JSON inválido, todavía debe poder reintentar."""
+    json_malo = httpx.Response(400, text='{"error":{"code":"json_validate_failed"}}')
+    llm, esperas = cliente(
+        [httpx.Response(429, headers={"retry-after": "1"}, json={})] * 2
+        + [json_malo, json_malo, respuesta_groq(TRIAJE_OK)],
+        monkeypatch,
+    )
+    assert llm.triaje("x").area == "laboral"
+    assert esperas == [1.5, 1.5]
+
+
+def test_json_invalido_persistente_falla_con_mensaje_claro(monkeypatch):
+    json_malo = httpx.Response(400, text='{"error":{"code":"json_validate_failed"}}')
+    llm, _ = cliente([json_malo] * 3, monkeypatch)
+    with pytest.raises(ErrorLLM, match="json_validate_failed"):
+        llm.triaje("x")

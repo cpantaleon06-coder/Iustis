@@ -166,7 +166,8 @@ class LimiteGroq(Exception):
 
 class GroqLLM:
     URL = "https://api.groq.com/openai/v1/chat/completions"
-    MAX_REINTENTOS = 3
+    MAX_REINTENTOS = 3  # reintentos por contenido (JSON inválido, falla de red)
+    MAX_ESPERAS = 3     # esperas por saturación, independientes de los reintentos
     MAX_ESPERA_S = 60
     # Si la espera sugerida supera esto y hay otro modelo disponible, se usa el de respaldo
     ESPERA_PARA_RESPALDO_S = 10
@@ -220,37 +221,44 @@ class GroqLLM:
             "reasoning_effort": esfuerzo,
             "include_reasoning": False,
         }
+        # Dos presupuestos separados: esperar por saturación no es lo mismo que reintentar
+        # porque el modelo devolvió un JSON que no cumple el esquema.
         ultimo_error = ""
-        for intento in range(1, self.MAX_REINTENTOS + 1):
+        esperas = intentos = 0
+        while intentos < self.MAX_REINTENTOS and esperas <= self.MAX_ESPERAS:
             try:
                 r = self.http.post(self.URL, headers=self.headers, json=cuerpo)
             except httpx.HTTPError as e:
+                intentos += 1
                 ultimo_error = f"sin conexión con Groq: {e}"
-                self.dormir(2 * intento)
+                self.dormir(2 * intentos)
                 continue
             if r.status_code == 429:
                 sugerida = (
                     duracion_a_segundos(r.headers.get("retry-after"))
                     or duracion_a_segundos(r.headers.get("x-ratelimit-reset-tokens"))
-                    or 2.0 * intento
+                    or 2.0 * (esperas + 1)
                 )
                 espera = min(sugerida + 0.5, self.MAX_ESPERA_S)
                 if not reintentar and sugerida > self.ESPERA_PARA_RESPALDO_S:
                     raise LimiteGroq(espera)
-                if intento == self.MAX_REINTENTOS:
+                esperas += 1
+                if esperas > self.MAX_ESPERAS:
                     raise LimiteGroq(espera)
-                log.warning("Groq 429 en %s; reintento %d en %.1f s", modelo, intento, espera)
+                log.warning("Groq 429 en %s; espera %d de %d, %.1f s", modelo, esperas, self.MAX_ESPERAS, espera)
                 self.dormir(espera)
                 continue
+            intentos += 1
             if r.status_code >= 500:
                 ultimo_error = f"Groq respondió {r.status_code} (falla temporal)"
-                self.dormir(2.0 * intento)
+                self.dormir(2.0 * intentos)
                 continue
             if r.status_code != 200:
                 ultimo_error = f"Groq respondió {r.status_code}: {r.text[:300]}"
-                if "json_validate_failed" in r.text and intento < self.MAX_REINTENTOS:
-                    continue  # el modelo produjo JSON inválido: se reintenta
-                raise ErrorLLM(ultimo_error)
+                if "json_validate_failed" not in r.text:
+                    raise ErrorLLM(ultimo_error)
+                log.warning("Groq devolvió JSON inválido en %s; reintento %d", modelo, intentos)
+                continue  # el modelo produjo JSON que no cumple el esquema: se reintenta
             eleccion = r.json()["choices"][0]
             if eleccion.get("finish_reason") != "stop":
                 raise ErrorLLM(f"respuesta incompleta de Groq (finish_reason={eleccion.get('finish_reason')})")
@@ -258,8 +266,6 @@ class GroqLLM:
                 return formato.model_validate_json(eleccion["message"]["content"] or "")
             except ValidationError as e:
                 ultimo_error = f"JSON que no cumple el esquema: {e.errors()[:2]}"
-                if intento == self.MAX_REINTENTOS:
-                    break
         raise ErrorLLM(ultimo_error or "Groq no respondió")
 
     def triaje(self, mensaje: str) -> Triaje:

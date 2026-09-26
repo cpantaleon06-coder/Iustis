@@ -9,11 +9,21 @@ recuperacion:
   rrf_k: 60     # constante estándar de Reciprocal Rank Fusion
 
 verificacion:
-  # Similitud coseno mínima del mejor artículo para contestar (embeddings locales multilingual-e5-base).
-  # Calibrado el 2026-09-25 con tests/bench/calibracion_provisional.yaml (21/22 bien separadas;
-  # dentro de módulos 0.843 a 0.873, fuera 0.799 a 0.843). Recalibrar con el banco oficial:
-  #   python -m rag.calibrar --escribir
-  umbral_similitud: 0.835
+  # Similitud coseno mínima del mejor artículo para contestar.
+  #
+  # POR QUÉ ESTE UMBRAL ES BAJO (medición del 2026-09-26): con multilingual-e5-base, las
+  # consultas de áreas NO cubiertas (divorcio, herencia, arrendamiento) puntúan 0.79 a 0.84,
+  # y las de área cubierta 0.82 a 0.86. Se traslapan, porque todas son español jurídico.
+  # Probamos también señales relativas (top menos mediana, z) y separan todavía peor.
+  # Conclusión: la similitud NO sirve para decidir si el tema está cubierto.
+  #
+  # Quién hace ese trabajo de verdad:
+  #   1. El triaje, que clasifica el área; si no hay módulo para ella, el pipeline se
+  #      abstiene antes de recuperar (es el filtro que sí funciona).
+  #   2. La compuerta 2, que exige que cada cita sea literal del artículo recuperado.
+  # Este umbral solo descarta lo claramente ajeno a cualquier texto legal (0.79 o menos).
+  # Subirlo hace que el asistente se abstenga en consultas legítimas.
+  umbral_similitud: 0.80
   umbral_calibrado: true
   # Una cita textual debe tener al menos estos caracteres (evita "citas" triviales)
   cita_min_caracteres: 20
