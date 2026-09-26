@@ -23,6 +23,7 @@ class Institucion:
     contacto: str
     tipo: str
     verificado: bool
+    fuente: str = ""  # URL oficial de donde se tomó el dato, para poder verificarlo
 
     @property
     def pendiente(self) -> bool:

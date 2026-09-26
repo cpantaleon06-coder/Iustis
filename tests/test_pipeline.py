@@ -4,6 +4,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from backend import render
 from backend.esquemas import CitaModelo, DatoFaltante, Derecho, Paso, RespuestaGenerada, Triaje
 from backend.llm import ClaudeLLM, ErrorLLM, contexto_articulos
 from backend.pipeline import CUANDO_ABOGADO_GENERICO, Pipeline
@@ -112,7 +113,7 @@ def test_cita_inventada_se_elimina_y_sin_derechos_se_abstiene(armar):
     assert r.tipo == "abstencion"
     assert "cinco lunas" not in r.texto
     assert r.traza["descartes"][0]["motivo"].startswith("no aparece literalmente")
-    assert "Defensoría Ficticia" in r.texto and "[PENDIENTE DE VERIFICACIÓN]" in r.texto
+    assert "Defensoría Ficticia" in r.texto and render.AVISO_PENDIENTE in r.texto
 
 
 def test_mezcla_de_citas_conserva_solo_la_verificada(armar):
@@ -301,3 +302,23 @@ def test_area_sin_modulo_no_pregunta_datos(armar):
     falta = DatoFaltante(dato="monto", pregunta="¿Cuánto era el depósito?", critico=True)
     r = armar(LLMFalso([triaje(area="civil", datos_faltantes=[falta])])).procesar("u1", "no me regresan el depósito")
     assert r.tipo == "abstencion" and "Cuánto era el depósito" not in r.texto
+
+
+def test_instituciones_verificadas_no_llevan_aviso(armar, tmp_path):
+    from backend.instituciones import Institucion
+
+    inst = Institucion("x", "Consejo Real", "cuando", "55 1234 5678", "canalizacion", verificado=True,
+                       fuente="https://ejemplo.gob.mx")
+    r = render.RespuestaVerificada("a", [], [], [inst], "b")
+    texto = render.render_respuesta(r)
+    assert "• Consejo Real: 55 1234 5678" in texto
+    assert render.AVISO_PENDIENTE not in texto
+
+
+def test_aviso_de_pendientes_aparece_una_sola_vez(armar):
+    from backend.instituciones import Institucion
+
+    insts = [Institucion(str(n), f"Inst {n}", "c", "tel", "canalizacion", verificado=False) for n in range(3)]
+    texto = render.render_respuesta(render.RespuestaVerificada("a", [], [], insts, "b"))
+    assert texto.count(render.AVISO_PENDIENTE) == 1
+    assert "[PENDIENTE DE VERIFICACIÓN]" not in texto

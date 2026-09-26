@@ -26,15 +26,24 @@ def cita_fuente(art: dict) -> str:
     return f"{art['ley']}, art. {art['articulo']}, versión {art['fecha_version']}"
 
 
+AVISO_PENDIENTE = "_Datos de contacto pendientes de verificación por el equipo._"
+
+
 def linea_institucion(i: Institucion) -> str:
-    marca = " [PENDIENTE DE VERIFICACIÓN]" if i.pendiente else ""
-    return f"• {i.nombre}: {i.contacto}{marca}"
+    return f"• {i.nombre}: {i.contacto}"
+
+
+def bloque_instituciones(titulo: str, instituciones: list[Institucion]) -> str:
+    """Una sola nota al pie si alguna institución no está verificada, en lugar de
+    repetir la marca en cada línea."""
+    lineas = [titulo] + [linea_institucion(i) for i in instituciones]
+    if any(i.pendiente for i in instituciones):
+        lineas.append(AVISO_PENDIENTE)
+    return "\n".join(lineas)
 
 
 def bloque_urgente(emergencias: list[Institucion]) -> str:
-    lineas = ["*Si estás en peligro ahora mismo, pide ayuda primero:*"]
-    lineas += [linea_institucion(i) for i in emergencias]
-    return "\n".join(lineas)
+    return bloque_instituciones("*Si estás en peligro ahora mismo, pide ayuda primero:*", emergencias)
 
 
 def render_respuesta(r: RespuestaVerificada, urgente: list[Institucion] | None = None) -> str:
@@ -61,7 +70,7 @@ def render_respuesta(r: RespuestaVerificada, urgente: list[Institucion] | None =
         partes.append(r.calculo)
 
     if r.instituciones:
-        partes.append("\n".join(["*A dónde acudir*"] + [linea_institucion(i) for i in r.instituciones]))
+        partes.append(bloque_instituciones("*A dónde acudir*", r.instituciones))
 
     partes.append(f"*Cuándo necesitas un abogado*\n{r.cuando_abogado}")
 
@@ -88,7 +97,7 @@ def render_abstencion(
         "respaldar con un artículo de ley."
     )
     if canalizacion:
-        partes.append("\n".join(["*A dónde acudir*"] + [linea_institucion(i) for i in canalizacion]))
+        partes.append(bloque_instituciones("*A dónde acudir*", canalizacion))
     partes.append(AVISO)
     return "\n\n".join(partes)
 

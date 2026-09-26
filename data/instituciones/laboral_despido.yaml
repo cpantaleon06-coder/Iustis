@@ -1,17 +1,33 @@
 # Instituciones del módulo laboral_despido. Mismo formato que general.yaml.
-# TODO lo que dice PLACEHOLDER debe llenarlo y verificarlo el equipo.
+#
+# ESTOS DATOS NO ESTÁN VERIFICADOS POR EL EQUIPO. Se tomaron de los sitios oficiales
+# indicados en "fuente" el 2026-09-25. Verifícalos y cambia "verificado" a true.
+#
+# Pendiente de decidir por el equipo: cuándo corresponde el Centro federal y cuándo el
+# Centro local de la Ciudad de México. El texto de "cuando" que sigue es una primera
+# aproximación y debe revisarse.
 
 instituciones:
   - id: laboral_asesoria_gratuita
-    nombre: "PLACEHOLDER (sugerencia a verificar: procuraduría de la defensa del trabajo que corresponda)"
-    cuando: "PLACEHOLDER"
-    contacto: "PLACEHOLDER"
+    nombre: "Procuraduría Federal de la Defensa del Trabajo (PROFEDET)"
+    cuando: "Asesoría, acompañamiento en la conciliación y representación jurídica gratuita para personas trabajadoras en cualquier conflicto laboral o de seguridad social"
+    contacto: "800 717 2942 o 800 911 7877, de lunes a viernes de 9:00 a 18:00 horas. Gratuito. https://www.gob.mx/profedet"
     tipo: canalizacion
+    fuente: "https://www.profedet.gob.mx/micrositio/index.php/preguntas-frecuentes"
     verificado: false
 
-  - id: laboral_conciliacion
-    nombre: "PLACEHOLDER (sugerencia a verificar: centro de conciliación laboral que corresponda)"
-    cuando: "PLACEHOLDER"
-    contacto: "PLACEHOLDER"
+  - id: laboral_conciliacion_cdmx
+    nombre: "Centro de Conciliación Laboral de la Ciudad de México"
+    cuando: "Iniciar la conciliación obligatoria antes de demandar, cuando el patrón es una empresa de competencia local en la Ciudad de México"
+    contacto: "55 6283 1495 o 55 6283 1496, de lunes a viernes de 8:00 a 14:00 horas. Calle Dr. Andrade 45, Colonia Doctores, Alcaldía Cuauhtémoc. https://www.ccl.cdmx.gob.mx"
     tipo: canalizacion
+    fuente: "https://www.ccl.cdmx.gob.mx/"
+    verificado: false
+
+  - id: laboral_conciliacion_federal
+    nombre: "Centro Federal de Conciliación y Registro Laboral"
+    cuando: "Iniciar la conciliación obligatoria antes de demandar, cuando el conflicto es de competencia federal por el giro de la empresa"
+    contacto: "PENDIENTE DE VERIFICAR: 55 8874 8600. Carretera Picacho-Ajusco 714, Torres de Padierna, Alcaldía Tlalpan. https://www.gob.mx/cfcrl"
+    tipo: canalizacion
+    fuente: "https://www.gob.mx/cfcrl"
     verificado: false
