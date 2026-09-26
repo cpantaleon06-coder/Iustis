@@ -169,5 +169,7 @@ def test_comparar_con_corrida_anterior(entorno, capsys):
     assert "R1: cita_correcta -> abstencion_indebida" in salida
 
 
-def test_banco_vacio_del_repositorio_es_valido_pero_no_corre():
-    assert rb.main(["--validar"]) == 1  # el banco real aún no tiene preguntas
+def test_banco_real_del_repositorio_es_valido():
+    """Valida el banco real: ids únicos, campos completos y que cada artículo esperado
+    exista en el corpus procesado. No llama a ningún modelo."""
+    assert rb.main(["--validar"]) == 0
