@@ -94,7 +94,9 @@ python -m rag.index --todos         # indexa ambos módulos (unos minutos en CPU
 uvicorn backend.main:app --port 8000
 ```
 
-Abre http://localhost:8000 para usar el chat web. `GET /salud` muestra qué llaves faltan y si el umbral está calibrado.
+Abre http://localhost:8000 y ya está funcionando: el **chat web** es la forma principal de usar Iustis y no necesita nada más. Trae ejemplos clicables para empezar, acepta notas de voz y se ve bien en el teléfono. `GET /salud` muestra qué llaves faltan y si el umbral está calibrado.
+
+Para que otras personas lo prueben desde su propio teléfono, expón el puerto con `ngrok http 8000` y comparte la URL. Los límites de `LIMITE_MENSAJES_*` protegen la cuota de Groq mientras esté abierto.
 
 Para probar sin servidor, desde la terminal:
 
@@ -102,7 +104,10 @@ Para probar sin servidor, desde la terminal:
 python -m backend.cli --traza "me despidieron ayer sin darme nada por escrito"
 ```
 
-## WhatsApp con OpenWA
+## WhatsApp con OpenWA (opcional)
+
+El chat web ya cubre el uso completo. Este canal añade WhatsApp, que es el objetivo del
+producto pero requiere un número dedicado y escanear un código QR.
 
 [OpenWA](https://www.open-wa.org) es un gateway REST autoalojado para WhatsApp. **No es oficial de Meta**: usen un número dedicado al proyecto, no uno personal.
 
