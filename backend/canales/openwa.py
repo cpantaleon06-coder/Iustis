@@ -155,6 +155,14 @@ class ClienteOpenWA:
         if r.status_code not in (200, 201, 204, 409):  # 409: ya estaba iniciada
             r.raise_for_status()
 
+    def nombre_sesion(self) -> str | None:
+        r = self.http.get(self._url(""), headers=self.headers)
+        if r.status_code != 200:
+            return None
+        d = r.json()
+        d = d.get("data", d) if isinstance(d.get("data"), dict) else d
+        return d.get("name")
+
     def estado_sesion(self) -> str:
         r = self.http.get(self._url(""), headers=self.headers)
         r.raise_for_status()
@@ -198,16 +206,19 @@ def configurar(url_publica: str, nombre_sesion: str, escribir_env, dormir=time.s
     try:
         if not cliente.sesion:
             cliente.sesion = cliente.crear_sesion(nombre_sesion)
-            print(f"1. Sesión creada: {cliente.sesion}")
+            print(f"1. Sesión '{nombre_sesion}' creada ({cliente.sesion})")
         else:
-            print(f"1. Usando la sesión existente: {cliente.sesion}")
+            nombre_sesion = cliente.nombre_sesion() or nombre_sesion
+            print(f"1. Usando la sesión existente '{nombre_sesion}' ({cliente.sesion})")
         cliente.iniciar_sesion()
 
         estado = cliente.estado_sesion()
         if estado.lower() not in ESTADOS_CONECTADO:
             print(f"\n2. La sesión está en estado '{estado}'. FALTA ESCANEAR EL QR:")
-            print(f"   Abre {cliente.base} en el navegador, entra a la sesión '{cliente.sesion}'")
-            print("   y escanea el código con el WhatsApp del número dedicado al proyecto.")
+            # El panel lista las sesiones por nombre, no por id, así que se nombra así
+            print(f"   Abre {cliente.base}/sessions, busca '{nombre_sesion}' y pulsa 'Mostrar QR'.")
+            print("   Escanea el código con el WhatsApp del número dedicado al proyecto")
+            print("   (Ajustes > Dispositivos vinculados > Vincular un dispositivo).")
             print(f"\n   Esperando hasta {esperar_s} segundos a que quede conectada...")
             for _ in range(esperar_s // 5):
                 dormir(5)
