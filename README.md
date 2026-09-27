@@ -1,4 +1,6 @@
-# Primeros Auxilios Legales
+# Iustis
+
+**Iustis da los Primeros Auxilios Legales y te ayuda a saber dónde acudir.**
 
 Asistente de triaje legal de primer contacto por **WhatsApp** (y chat web), sin instalar nada. La persona describe su problema con texto o nota de voz y recibe, en un formato fijo:
 

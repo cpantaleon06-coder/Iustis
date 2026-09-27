@@ -110,7 +110,8 @@ def render_pregunta(pregunta: str, urgente: list[Institucion] | None = None) -> 
 
 
 BIENVENIDA = (
-    "Hola, soy *Primeros Auxilios Legales*. Cuéntame en tus palabras qué te pasó "
+    "Hola, soy *Iustis*. Te doy los primeros auxilios legales y te ayudo a saber a dónde acudir.\n\n"
+    "Cuéntame en tus palabras qué te pasó "
     "(por ejemplo: \"me despidieron sin darme nada por escrito\" o \"se llevaron mi carro al corralón\") "
     "y te digo qué derechos tienes, qué hacer y a dónde acudir."
 )

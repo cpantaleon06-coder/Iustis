@@ -252,7 +252,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--configurar", metavar="URL_PUBLICA",
                     help="deja todo listo: crea la sesión, espera el escaneo del QR y registra el webhook")
     ap.add_argument("--registrar-webhook", metavar="URL_PUBLICA", help="solo registra el webhook")
-    ap.add_argument("--nombre-sesion", default="primeros-auxilios-legales")
+    ap.add_argument("--nombre-sesion", default="iustis")
     args = ap.parse_args(argv)
 
     if args.configurar:

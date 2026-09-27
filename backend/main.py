@@ -42,7 +42,7 @@ AVISO_LIMITE = (
     "Si tu caso es urgente, acude directamente a las instituciones que te indiqué."
 )
 
-app = FastAPI(title="Primeros Auxilios Legales")
+app = FastAPI(title="Iustis", description="Iustis da los Primeros Auxilios Legales y te ayuda a saber dónde acudir")
 _estado: dict = {"pipeline": None, "openwa": None}
 deduplicador = Deduplicador()
 # Cada mensaje cuesta llamadas a Claude: límites por usuario y por IP (ventana de una hora)

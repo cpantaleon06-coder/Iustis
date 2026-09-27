@@ -172,7 +172,7 @@ def test_institucion_fuera_de_catalogo_se_ignora(armar):
 
 def test_mensaje_no_legal_da_bienvenida(armar):
     r = armar(LLMFalso([triaje(es_consulta_legal=False, area="fuera_de_alcance")])).procesar("u1", "hola")
-    assert r.tipo == "no_legal" and "Primeros Auxilios Legales" in r.texto
+    assert r.tipo == "no_legal" and "Iustis" in r.texto
 
 
 def test_area_sin_modulo_se_abstiene_y_canaliza(armar):

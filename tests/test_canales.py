@@ -277,7 +277,7 @@ def test_api_chat_voz(cliente, monkeypatch):
 def test_pagina_de_chat(cliente):
     tc, _, _ = cliente
     r = tc.get("/")
-    assert r.status_code == 200 and "Primeros Auxilios Legales" in r.text
+    assert r.status_code == 200 and "Iustis" in r.text
 
 
 # Límites de uso
