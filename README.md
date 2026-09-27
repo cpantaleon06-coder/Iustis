@@ -96,7 +96,25 @@ uvicorn backend.main:app --port 8000
 
 Abre http://localhost:8000 y ya está funcionando: el **chat web** es la forma principal de usar Iustis y no necesita nada más. Trae ejemplos clicables para empezar, acepta notas de voz y se ve bien en el teléfono. `GET /salud` muestra qué llaves faltan y si el umbral está calibrado.
 
-Para que otras personas lo prueben desde su propio teléfono, expón el puerto con `ngrok http 8000` y comparte la URL. Los límites de `LIMITE_MENSAJES_*` protegen la cuota de Groq mientras esté abierto.
+### Compartirlo con otras personas
+
+Para que alguien lo pruebe desde su propio teléfono hace falta exponer el servidor, porque
+Iustis no es una página estática: necesita su backend (el índice de búsqueda, las compuertas
+de verificación y la calculadora corren ahí). La forma más rápida, sin cuenta ni registro:
+
+```bash
+cloudflared tunnel --url http://localhost:8000
+```
+
+Imprime una URL `https://....trycloudflare.com` que sirve mientras el túnel y el servidor
+sigan encendidos (`ngrok http 8000` hace lo mismo si ya tienes cuenta).
+
+Tres cosas que conviene saber antes de compartirla:
+
+- **Depende de tu máquina.** Si se apaga el servidor o el túnel, el enlace deja de funcionar.
+- **La URL cambia** cada vez que reinicias el túnel.
+- **Consume tu cuota de Groq.** Cualquiera con el enlace puede usarlo; por eso existen los
+  límites de `LIMITE_MENSAJES_USUARIO_HORA` y `LIMITE_MENSAJES_IP_HORA`.
 
 Para probar sin servidor, desde la terminal:
 
