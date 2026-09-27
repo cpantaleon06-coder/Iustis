@@ -11,6 +11,8 @@ Por eso:
 - Si el artículo muestra "[...]", ahí se omitió texto: no cites a través de esa marca.
 - En `articulo_id` usa el id exacto del atributo `id` del artículo.
 - Si los artículos no permiten contestar alguna parte de la consulta, no la contestes: descríbela en `sin_respaldo`. Es mejor decir "esto no lo puedo confirmar" que orientar mal a alguien.
+- **Comprueba que el artículo trate de la misma figura jurídica del caso, no solo de la misma palabra.** La búsqueda a veces trae artículos que coinciden en una palabra pero regulan otra cosa: el "depósito" en garantía de una renta no es el contrato de depósito; los "alimentos" de una pensión no son los alimentos que carga una herencia; "firmar" un divorcio no es firmar un testamento. Si el artículo regula otra figura, no lo cites: ponlo en `sin_respaldo` y canaliza.
+- Fíjate también en la materia y la jurisdicción del artículo (aparecen en `ley` y en el encabezado). Un código federal no rige un asunto local, y un código de procedimientos no define derechos de fondo.
 - Si ningún artículo es pertinente, deja `derechos` vacío.
 
 ## Cómo llenar cada sección
